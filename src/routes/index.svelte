@@ -4,20 +4,41 @@
   let board = sudoku.generate(DIFFICULTY.easy)
   let grid = sudoku.board_string_to_grid(board)
   let candidates = sudoku.get_candidates(board)
+
+  let showCandidates = false
 </script>
 
-<section class="flex justify-center">
+<section>
   <div class="board">
   {#each grid as group, rowIndex}
     <div class="row">
     {#each group as cell, cellIndex}
       <div class="cell">
-        {cell === '.' ? '' : cell}
+        {#if cell !== '.'}
+          {cell}
+        {:else if showCandidates}
+          <div class="row candidates">
+            {#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as v, i}
+              {#if candidates[rowIndex][cellIndex].includes(v.toString())}
+                <span>{v}</span>
+              {:else}
+                <span></span>
+              {/if}
+            {/each}
+          </div>
+        {/if}
       </div>
     {/each}
     </div>
   {/each}
   </div>
+</section>
+
+<section>
+  <label>
+    <input bind:checked={showCandidates} type="checkbox">
+    <span>Show candidates</span>
+  </label>
 </section>
 
 <svelte:head>
@@ -29,18 +50,14 @@
 </svelte:head>
 
 <style>
-  .flex {
+  section {
       display: flex;
-  }
-  .justify-center {
       justify-content: center;
+      margin-bottom: 2rem;
   }
 
   .board {
-      max-width: 40rem;
       min-width: 30rem;
-      /*width: 100%;*/
-      /*height: 100%;*/
       border: 1px solid black;
       border-radius: 5px;
 
@@ -66,6 +83,10 @@
       min-height: 100%;
       overflow: hidden;
 
-      font-size: 32pt;
+      font-size: 2.5rem;
+  }
+  .candidates {
+      font-size: .9rem;
+      background: white;
   }
 </style>
