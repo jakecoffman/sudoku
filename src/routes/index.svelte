@@ -6,23 +6,28 @@
   let candidates = sudoku.get_candidates(board)
 
   let showCandidates = false
+  let selected = null
+
+  function select(group, cell) {
+    selected = `${group}.${cell}`
+  }
 </script>
 
 <section>
   <div class="board">
-  {#each grid as group, rowIndex}
+  {#each grid as group, groupIndex}
     <div class="row">
     {#each group as cell, cellIndex}
-      <div class="cell">
+      <div class="cell" class:selected={selected === `${groupIndex}.${cellIndex}`} on:click={() => select(groupIndex, cellIndex)}>
         {#if cell !== '.'}
           {cell}
         {:else if showCandidates}
-          <div class="row candidates">
-            {#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as v, i}
-              {#if candidates[rowIndex][cellIndex].includes(v.toString())}
+          <div class="candidates">
+            {#each sudoku.DIGITS as v, i}
+              {#if candidates[groupIndex][cellIndex].includes(v)}
                 <span>{v}</span>
               {:else}
-                <span></span>
+                <span>&nbsp;</span>
               {/if}
             {/each}
           </div>
@@ -50,6 +55,10 @@
 </svelte:head>
 
 <style>
+  :root {
+      --lg: #d5d5d5;
+  }
+
   section {
       display: flex;
       justify-content: center;
@@ -57,14 +66,13 @@
   }
 
   .board {
-      min-width: 30rem;
-      border: 1px solid black;
+      min-width: 35rem;
       border-radius: 5px;
 
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       grid-gap: 4px;
-      background: gray;
+      background: var(--lg);
 
       box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
   }
@@ -72,7 +80,7 @@
       display: grid;
       grid-gap: 1px;
       grid-template-columns: 1fr 1fr 1fr;
-      background: gray;
+      background: var(--lg);
   }
   .cell {
       /* aspect-ratio often breaks resizing */
@@ -86,7 +94,15 @@
       font-size: 2.5rem;
   }
   .candidates {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       font-size: .9rem;
-      background: white;
+      pointer-events: none;
+  }
+  .candidates * {
+      pointer-events: none;
+  }
+  .selected {
+      background: #2979fb;
   }
 </style>
