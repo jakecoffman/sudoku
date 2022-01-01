@@ -1,24 +1,41 @@
 <script>
   import {scale} from 'svelte/transition'
   import {sudoku, DIFFICULTY} from "$lib/sudoku.js";
+  import {stringToGrid, gridToString} from "$lib/jake.js";
 
   let board = sudoku.generate(DIFFICULTY.easy)
-  let grid = sudoku.board_string_to_grid(board)
-  let candidates = sudoku.get_candidates(board)
+  let grid = stringToGrid(board)
+  let candidates = stringToGrid(sudoku.get_candidates(board).flat())
 
   let showCandidates = false
   let selected = null
   let target = null
+  let end = false
 
   // select called when a user clicks a cell
-  function select(event, group, cell) {
-    selected = `${group}.${cell}`
+  function select(event, cell) {
+    selected = cell
     target = event.target.getBoundingClientRect()
   }
 
   // pick called when a user clicks a digit on the popup dialog picker
   function pick(digit) {
+    selected.digit = digit
+    selected.user = true // indicate this wasn't part of the initial puzzle
+    // error if it wasn't a possible candidate
+    selected.error = !Array.from(candidates[selected.groupIndex][selected.cellIndex].digit).includes(digit)
+    if (!selected.error) {
+      // recalculate to remove impossible pencil marks
+      board = gridToString(grid)
+      candidates = stringToGrid(sudoku.get_candidates(board).flat())
+    }
 
+    for (let row of grid) {
+      if (row.some(v => v.digit === '.' || v.error)) {
+        return
+      }
+    }
+    end = true
   }
 </script>
 
@@ -28,15 +45,19 @@
     <div class="row">
     {#each group as cell, cellIndex}
       <div class="cell"
-           class:selected={selected === `${groupIndex}.${cellIndex}`}
-           on:click={(e) => select(e, groupIndex, cellIndex)}
+           class:selected={selected === cell}
+           on:click={(e) => select(e, cell)}
       >
-        {#if cell !== '.'}
-          {cell}
+        {#if cell.digit !== '.'}
+          <span class:user={cell.user}
+                class:error={cell.error}
+          >
+            {cell.digit}
+          </span>
         {:else if showCandidates}
           <div class="candidates">
             {#each sudoku.DIGITS as v, i}
-              {#if candidates[groupIndex][cellIndex].includes(v)}
+              {#if candidates[groupIndex][cellIndex].digit.includes(v)}
                 <span>{v}</span>
               {:else}
                 <span>&nbsp;</span>
@@ -58,12 +79,12 @@
   </label>
 </section>
 
-{#if selected}
+{#if selected && (selected.digit === '.' || selected.user)}
   <div class="dialog" on:click={() => selected = null}>
-    <aside style="position: fixed; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;" transition:scale>
+    <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;" transition:scale>
       <div class="row">
         {#each sudoku.DIGITS as digit, i}
-          <span class="cell picker" on:click={pick(digit)}>
+          <span class="cell picker" on:click={() => pick(digit)}>
             {digit}
           </span>
         {/each}
@@ -71,6 +92,17 @@
     </aside>
   </div>
 {/if}
+
+{#if end}
+  <div class="dialog" on:click={() => end = false}>
+    <aside>
+      <h1>A winner is you!</h1>
+    </aside>
+  </div>
+{/if}
+
+<h3>Selected</h3>
+{JSON.stringify(selected)}
 
 <svelte:head>
   <style>
@@ -132,6 +164,12 @@
   }
   .selected {
       background: var(--blue);
+  }
+  .user {
+      color: #2979fb;
+  }
+  .error {
+      color: #ff5050;
   }
   .dialog {
       position: fixed;
