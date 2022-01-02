@@ -3,7 +3,8 @@
   import {sudoku, DIFFICULTY} from "$lib/sudoku.js";
   import {stringToGrid, gridToString} from "$lib/jake.js";
 
-  let board = sudoku.generate(DIFFICULTY.easy)
+  let difficulty = DIFFICULTY.hard
+  let board = sudoku.generate(difficulty)
   let grid = stringToGrid(board)
   let candidates = stringToGrid(sudoku.get_candidates(board).flat())
 
@@ -12,8 +13,24 @@
   let target = null
   let end = false
 
+  function newGame() {
+    end = false
+    board = sudoku.generate(difficulty)
+    grid = stringToGrid(board)
+    candidates = stringToGrid(sudoku.get_candidates(board).flat())
+  }
+
   // select called when a user clicks a cell
   function select(event, cell) {
+    // user is clicking on a cell they've already entered something into: clear it
+    if (cell.user && cell.digit !== '.') {
+      cell.digit = '.'
+      cell.error = false
+      grid = grid
+      board = gridToString(grid)
+      candidates = stringToGrid(sudoku.get_candidates(board).flat())
+      return
+    }
     selected = cell
     target = event.target.getBoundingClientRect()
   }
@@ -73,6 +90,18 @@
 </section>
 
 <section>
+  <fieldset style="border: 1px solid black">
+    <legend>Difficulty</legend>
+    {#each Object.entries(DIFFICULTY) as diff}
+    <label>
+      <input type=radio bind:group={difficulty} name="difficulty" value={diff[1]} on:change={newGame}>
+      {diff[0]}
+    </label>
+    {/each}
+  </fieldset>
+</section>
+
+<section>
   <label>
     <input bind:checked={showCandidates} type="checkbox">
     <span>Show all candidates</span>
@@ -94,15 +123,15 @@
 {/if}
 
 {#if end}
-  <div class="dialog" on:click={() => end = false}>
-    <aside>
-      <h1>A winner is you!</h1>
+  <div class="dialog" style="display: flex; align-items: center; justify-content: center;">
+    <aside style="padding: 1rem;">
+      <h1>YOU WIN!</h1>
+      <button on:click={newGame}>
+        New game
+      </button>
     </aside>
   </div>
 {/if}
-
-<h3>Selected</h3>
-{JSON.stringify(selected)}
 
 <svelte:head>
   <style>
@@ -128,6 +157,7 @@
   }
 
   .board {
+      margin-top: 2rem;
       min-width: 35rem;
       border-radius: 5px;
 
@@ -163,7 +193,7 @@
       pointer-events: none;
   }
   .selected {
-      background: var(--blue);
+      /*background: var(--blue);*/
   }
   .user {
       color: #2979fb;
@@ -177,6 +207,7 @@
       left: 0;
       right: 0;
       height: 100%;
+      background: rgba(0, 0, 0, 0.22);
   }
   aside {
       background: white;
