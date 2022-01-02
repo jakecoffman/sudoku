@@ -154,7 +154,7 @@
 <!--  </fieldset>-->
 <!--</section>-->
 
-<section style="gap: 1rem; flex-direction: column; align-items: center">
+<section class="timebar">
   <div style="display: flex; align-items: center">
     <button on:click={() => paused = !paused}>
       <Stopwatch/>
@@ -318,7 +318,7 @@
       justify-content: center;
   }
   .selected {
-      background: var(--blue);
+      background: var(--blue) !important;
   }
   .user {
       color: #2979fb;
@@ -357,12 +357,20 @@
       width: 100%;
       height: 100%;
   }
+  .timebar {
+      gap: 1rem;
+      flex-direction: column;
+      align-items: center;
+  }
   @media (min-width: 650px) {
       .board {
           width: 35rem !important;
       }
   }
   @media (max-width: 650px) {
+      .timebar {
+          flex-direction: row;
+      }
       .candidates {
           font-size: .7rem;
       }
