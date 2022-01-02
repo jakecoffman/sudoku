@@ -167,8 +167,26 @@
   </label>
 </section>
 
+<div class="mobile">
+  {#each digits as digit, i}
+    <span on:click={() => pick(digit)} class:selected={selected?.pencil?.includes(digit)}>
+      {digit}
+    </span>
+  {/each}
+  <span
+        class:selected={usingPencil}
+        on:click={() => usingPencil = !usingPencil}
+  >
+    <span>
+      <Pencil/>
+    </span>
+  </span>
+  <span><span>&nbsp;</span></span>
+  <span><span>&nbsp;</span></span>
+</div>
+
 {#if selected && (selected.digit === '0' || selected.user)}
-  <div class="dialog" on:click={() => selected = null} transition:fade>
+  <div class="dialog desktop" on:click={() => selected = null} transition:fade>
     <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;"
            transition:scale
            on:click={e => e.stopPropagation()}
@@ -258,11 +276,6 @@
 
       box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
   }
-  @media (min-width: 650px) {
-      .board {
-          width: 35rem;
-      }
-  }
   .row {
       display: grid;
       grid-gap: 1px;
@@ -330,5 +343,40 @@
   }
   aside .cell {
       font-size: 20pt;
+  }
+  .mobile {
+      display: none;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--lg);
+      text-align: center;
+      font-size: 24pt;
+  }
+  .mobile > * {
+      background: white;
+      width: 100%;
+      height: 100%;
+  }
+  @media (min-width: 650px) {
+      .board {
+          width: 35rem !important;
+      }
+  }
+  @media (max-width: 650px) {
+      .candidates {
+          font-size: .7rem;
+      }
+      aside {
+          display: none;
+      }
+      .mobile {
+          display: grid;
+      }
+      .board {
+          margin-top: 0;
+      }
+      .desktop {
+          display: none;
+      }
   }
 </style>
