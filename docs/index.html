@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<title>Jake's Sudoku</title>
 		<meta charset="utf-8" />
-		<meta name="description" content="" />
-		<link rel="icon" href="/favicon.png" />
+		<meta name="twitter:card" content="player" />
+		<meta name="twitter:site" content="@nill" />
+		<meta name="twitter:creator" content="@nill" />
+		<meta property="og:url" content="https://jakecoffman.com/sudoku/" />
+		<meta property="og:title" content="Jake's Sudoku" />
+		<meta property="og:description" content="Just another Sudoku." />
+		<meta property="og:image" content="https://jakecoffman.com/sudoku/preview.png" />
+		<meta name="twitter:player" content="https://jakecoffman.com/sudoku/" />
+		<meta name="twitter:player:width" content="600" />
+		<meta name="twitter:player:height" content="480" />
+		<meta name="description" content="just another Sudoku" />
+		<link rel="icon" href="favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<style data-svelte="svelte-14xigbt">body {
         font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -49,14 +60,106 @@
 		</script>
 	</head>
 	<body>
-		<script src="/sudoku.js"></script>
 		<div id="svelte">
 
 
-<section class="svelte-15cr38p"><div class="board svelte-15cr38p"><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">9
+<section class="svelte-15cr38p"><div class="board svelte-15cr38p"><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">3
           </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div>
+    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">6
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">1
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">7
+          </span>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">3
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">2
+          </span>
+      </div>
+    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">1
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">6
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div>
+    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">3
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">4
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">8
+          </span>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">9
+          </span>
+      </div>
+    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">8
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div>
+    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">4
+          </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
@@ -65,12 +168,33 @@
           </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">3
+          </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">2
+          </span>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">6
+          </span>
+      </div>
+    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">1
+          </span>
       </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">7
           </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">6
+          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">9
+          </span>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">4
+          </span>
       </div>
     </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
@@ -80,57 +204,25 @@
           </div>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">7
+          </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">6
-          </span>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">9
-          </span>
+      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
+          </div>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
       </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">1
           </span>
       </div>
-    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">8
+    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">3
           </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">6
-          </span>
-      </div>
-    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">7
-          </span>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">3
+      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">4
           </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">8
-          </span>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">5
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div>
-    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">6
-          </span>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
@@ -141,88 +233,6 @@
           </div>
       </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
           </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">3
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div>
-    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">5
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">8
-          </span>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">1
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">2
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">4
-          </span>
-      </div>
-    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">1
-          </span>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">9
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">2
-          </span>
-      </div>
-    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">5
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div>
-    </div><div class="row svelte-15cr38p"><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">6
-          </span>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">8
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">9
-          </span>
-      </div><div class="cell svelte-15cr38p"><div class="candidates svelte-15cr38p"><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span><span class="svelte-15cr38p"> </span>
-          </div>
-      </div><div class="cell svelte-15cr38p"><span class="svelte-15cr38p">5
-          </span>
       </div>
     </div></div></section>
 
