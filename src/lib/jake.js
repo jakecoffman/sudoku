@@ -9,17 +9,17 @@ export function stringToGrid(string) {
   let jump = 0
   for (let i = 0; i < arr.length; i+=3) {
     grid.push([
-      {digit: arr[i], cellIndex: 0, groupIndex: jump},
-      {digit: arr[i+1], cellIndex: 1, groupIndex: jump},
-      {digit: arr[i+2], cellIndex: 2, groupIndex: jump},
+      {digit: arr[i], cellIndex: 0, groupIndex: jump, pencil: []},
+      {digit: arr[i+1], cellIndex: 1, groupIndex: jump, pencil: []},
+      {digit: arr[i+2], cellIndex: 2, groupIndex: jump, pencil: []},
 
-      {digit: arr[i+9], cellIndex: 3, groupIndex: jump},
-      {digit: arr[i+1+9], cellIndex: 4, groupIndex: jump},
-      {digit: arr[i+2+9], cellIndex: 5, groupIndex: jump},
+      {digit: arr[i+9], cellIndex: 3, groupIndex: jump, pencil: []},
+      {digit: arr[i+1+9], cellIndex: 4, groupIndex: jump, pencil: []},
+      {digit: arr[i+2+9], cellIndex: 5, groupIndex: jump, pencil: []},
 
-      {digit: arr[i+18], cellIndex: 6, groupIndex: jump},
-      {digit: arr[i+1+18], cellIndex: 7, groupIndex: jump},
-      {digit: arr[i+2+18], cellIndex: 8, groupIndex: jump},
+      {digit: arr[i+18], cellIndex: 6, groupIndex: jump, pencil: []},
+      {digit: arr[i+1+18], cellIndex: 7, groupIndex: jump, pencil: []},
+      {digit: arr[i+2+18], cellIndex: 8, groupIndex: jump, pencil: []},
     ])
     jump++
     if (jump % 3 === 0) {
@@ -119,4 +119,10 @@ export function setErrors(displayGrid, gridGrid) {
       }
     }
   }
+}
+
+export function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }

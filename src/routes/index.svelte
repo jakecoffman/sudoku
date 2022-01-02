@@ -1,13 +1,15 @@
 <script>
+  import Pencil from "$lib/Pencil.svelte";
   import {scale} from 'svelte/transition'
-  import {stringToGrid, gridToString, setErrors} from "$lib/jake.js";
-  import {expertGames} from "$lib/games.js";
+  import {stringToGrid, gridToString, setErrors, getRandomInt} from "$lib/jake.js";
+  import {hardGames} from "$lib/games.js";
 
   const digits = ['1','2','3','4','5','6','7','8','9']
 
-  let displayGrid = stringToGrid(expertGames[0])
+  let displayGrid = stringToGrid(hardGames[getRandomInt(0, hardGames.length)])
   let gridGrid = gridToString(displayGrid)
 
+  let usingPencil = false
   let autoPencil = false
   let selected = null
   let target = null
@@ -15,7 +17,7 @@
 
   function newGame() {
     end = false
-    displayGrid = stringToGrid(expertGames[0])
+    displayGrid = stringToGrid(hardGames[getRandomInt(0, hardGames.length)])
   }
 
   // select called when a user clicks a cell
@@ -34,13 +36,22 @@
 
   // pick called when a user clicks a digit on the popup dialog picker
   function pick(digit) {
-    selected.digit = digit
-    selected.user = true // indicate this wasn't part of the initial puzzle
-    setErrors(displayGrid, gridGrid)
-
+    if (usingPencil) {
+      if (selected.pencil.includes(digit)) {
+        selected.pencil = selected.pencil.filter(v => v !== digit)
+      } else {
+        selected.pencil.push(digit)
+      }
+    } else {
+      selected.digit = digit
+      selected.user = true // indicate this wasn't part of the initial puzzle
+      setErrors(displayGrid, gridGrid)
+    }
     displayGrid = displayGrid
     gridGrid = gridGrid
+    selected = null
 
+    // check for win condition
     for (let row of displayGrid) {
       if (row.some(v => v.digit === '0' || v.error)) {
         return
@@ -55,24 +66,19 @@
   {#each displayGrid as group, groupIndex}
     <div class="row">
     {#each group as cell, cellIndex}
-      <div class="cell"
-           class:selected={selected === cell}
-           on:click={(e) => select(e, cell)}
-      >
+      <div class="cell" class:selected={selected === cell} on:click={(e) => select(e, cell)}>
         {#if cell.digit !== '0'}
-          <span class:user={cell.user}
-                class:error={cell.error}
-          >
+          <span class:user={cell.user} class:error={cell.error}>
             {cell.digit}
           </span>
-        {:else if autoPencil}
+        {:else}
           <div class="candidates">
             {#each digits as v, i}
-              <!--{#if candidates[groupIndex][cellIndex].digit.includes(v)}-->
-<!--                <span>{v}</span>-->
-<!--              {:else}-->
+              {#if cell.pencil.includes(v)}
+                <span>{v}</span>
+              {:else}
                 <span>&nbsp;</span>
-              <!--{/if}-->
+              {/if}
             {/each}
           </div>
         {/if}
@@ -95,7 +101,12 @@
 <!--  </fieldset>-->
 <!--</section>-->
 
-<section>
+<section style="gap: 1rem">
+  <label>
+    <input bind:checked={usingPencil} type="checkbox">
+    <span>Pencil</span>
+  </label>
+
   <label>
     <input bind:checked={autoPencil} type="checkbox">
     <span>Auto pencil</span>
@@ -104,13 +115,24 @@
 
 {#if selected && (selected.digit === '0' || selected.user)}
   <div class="dialog" on:click={() => selected = null}>
-    <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;" transition:scale>
+    <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;"
+           transition:scale
+           on:click={e => e.stopPropagation()}
+    >
       <div class="row">
         {#each digits as digit, i}
           <span class="cell picker" on:click={() => pick(digit)}>
             {digit}
           </span>
         {/each}
+        <span class="cell" style="overflow: hidden"
+              class:selected={usingPencil}
+              on:click={() => usingPencil = !usingPencil}
+        >
+          <Pencil/>
+        </span>
+        <span class="cell">&nbsp;</span>
+        <span class="cell">&nbsp;</span>
       </div>
     </aside>
   </div>
@@ -187,7 +209,7 @@
       pointer-events: none;
   }
   .selected {
-      /*background: var(--blue);*/
+      background: var(--blue);
   }
   .user {
       color: #2979fb;
