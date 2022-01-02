@@ -4,7 +4,7 @@
   import Time from "$lib/Time.svelte";
 
   import {scale, fade} from 'svelte/transition'
-  import {stringToGrid, gridToString, setErrors, getRandomInt, clearSuperfluousPencilMarks} from "$lib/jake.js";
+  import {stringToGrid, gridToString, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
   import {hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
 
@@ -30,6 +30,9 @@
     window.onblur = () => {
       paused = true
     }
+    window.onfocus = () => {
+      paused = false
+    }
   })
 
   function newGame() {
@@ -48,6 +51,9 @@
     if (cell.user && cell.digit !== '0') {
       cell.digit = '0'
       setErrors(displayGrid, gridGrid)
+      if (autoPencil) {
+        doAutoPencil(displayGrid, gridGrid)
+      }
       displayGrid = displayGrid
       gridGrid = gridGrid
       return
@@ -86,6 +92,22 @@
     }
     end = true
     paused = true
+  }
+
+  function updateAutoPencil() {
+    // this looks backwards, but the svelte click hasn't fired yet
+    if (autoPencil) {
+      for (let row of displayGrid) {
+        for (let cell of row) {
+          cell.pencil = []
+        }
+      }
+      displayGrid = displayGrid
+      return
+    }
+    doAutoPencil(displayGrid, gridGrid)
+    displayGrid = displayGrid
+    gridGrid = gridGrid
   }
 </script>
 
@@ -131,15 +153,17 @@
 <!--  </fieldset>-->
 <!--</section>-->
 
-<section style="gap: 1rem">
-  <button on:click={() => paused = !paused}>
-    <Stopwatch/>
-  </button>
-  <Time bind:seconds={seconds}/>
-<!--  <label>-->
-<!--    <input bind:checked={autoPencil} type="checkbox">-->
-<!--    <span>Auto pencil</span>-->
-<!--  </label>-->
+<section style="gap: 1rem; flex-direction: column; align-items: center">
+  <div>
+    <button on:click={() => paused = !paused}>
+      <Stopwatch/>
+    </button>
+    <Time bind:seconds={seconds}/>
+  </div>
+  <label>
+    <input bind:checked={autoPencil} on:click={updateAutoPencil} type="checkbox">
+    <span>Auto pencil</span>
+  </label>
 </section>
 
 {#if selected && (selected.digit === '0' || selected.user)}

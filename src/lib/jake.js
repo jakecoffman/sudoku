@@ -128,27 +128,64 @@ export function getRandomInt(min, max) {
 }
 
 export function clearSuperfluousPencilMarks(selection, displayGrid, gridGrid) {
-  for (let group of displayGrid) {
-    for (let cell of group) {
-      if (cell !== selection) {
-        cell.pencil = cell.pencil.filter(v => v !== selection.digit)
+  for (let cell of displayGrid[selection.groupIndex]) {
+    if (cell !== selection) {
+      cell.pencil = cell.pencil.filter(v => v !== selection.digit)
+    }
+  }
+
+  // find the column it's in
+  let row = -1
+  let column = -1
+  out:
+  for (let c = 0; c < 9; c++) {
+    for (let r = 0; r < 9; r++) {
+      if (gridGrid[r][c] === selection) {
+        column = c
+        row = r
+        break out
       }
+    }
+  }
+
+  for (let i = 0; i < 9; i++) {
+    if (gridGrid[i][column] !== selection) {
+      gridGrid[i][column].pencil = gridGrid[i][column].pencil.filter(v => v !== selection.digit)
+    }
+    if (gridGrid[row][i] !== selection) {
+      gridGrid[row][i].pencil = gridGrid[row][i].pencil.filter(v => v !== selection.digit)
+    }
+  }
+}
+
+export function doAutoPencil(displayGrid, gridGrid) {
+  const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+  for (let group of displayGrid) {
+    const takenDigits = group.map(v => v.digit).filter(v => v !== '0')
+    const pencil = digits.filter(v => !takenDigits.includes(v))
+    for (let cell of group) {
+      cell.pencil = pencil
     }
   }
 
   for (let row of gridGrid) {
+    const takenDigits = row.map(v => v.digit).filter(v => v !== '0')
     for (let cell of row) {
-      if (cell !== selection) {
-        cell.pencil = cell.pencil.filter(v => v !== selection.digit)
-      }
+      cell.pencil = cell.pencil.filter(v => !takenDigits.includes(v))
     }
   }
 
   for (let row = 0; row < 9; row++) {
+    const takenDigits = []
     for (let column = 0; column < 9; column++) {
-      if (gridGrid[column][row] !== selection) {
-        gridGrid[column][row].pencil = gridGrid[column][row].pencil.filter(v => v !== selection.digit)
+      if (gridGrid[column][row].digit !== '0') {
+        takenDigits.push(gridGrid[column][row].digit)
       }
+    }
+    for (let column = 0; column < 9; column++) {
+      const cell = gridGrid[column][row]
+      cell.pencil = cell.pencil.filter(v => !takenDigits.includes(v))
     }
   }
 }
