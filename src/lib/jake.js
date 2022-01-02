@@ -126,3 +126,29 @@ export function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
+
+export function clearSuperfluousPencilMarks(selection, displayGrid, gridGrid) {
+  for (let group of displayGrid) {
+    for (let cell of group) {
+      if (cell !== selection) {
+        cell.pencil = cell.pencil.filter(v => v !== selection.digit)
+      }
+    }
+  }
+
+  for (let row of gridGrid) {
+    for (let cell of row) {
+      if (cell !== selection) {
+        cell.pencil = cell.pencil.filter(v => v !== selection.digit)
+      }
+    }
+  }
+
+  for (let row = 0; row < 9; row++) {
+    for (let column = 0; column < 9; column++) {
+      if (gridGrid[column][row] !== selection) {
+        gridGrid[column][row].pencil = gridGrid[column][row].pencil.filter(v => v !== selection.digit)
+      }
+    }
+  }
+}

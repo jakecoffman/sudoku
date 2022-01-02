@@ -1,7 +1,7 @@
 <script>
   import Pencil from "$lib/Pencil.svelte";
   import {scale} from 'svelte/transition'
-  import {stringToGrid, gridToString, setErrors, getRandomInt} from "$lib/jake.js";
+  import {stringToGrid, gridToString, setErrors, getRandomInt, clearSuperfluousPencilMarks} from "$lib/jake.js";
   import {hardGames} from "$lib/games.js";
 
   const digits = ['1','2','3','4','5','6','7','8','9']
@@ -46,6 +46,7 @@
       selected.digit = digit
       selected.user = true // indicate this wasn't part of the initial puzzle
       setErrors(displayGrid, gridGrid)
+      clearSuperfluousPencilMarks(selected, displayGrid, gridGrid)
     }
     displayGrid = displayGrid
     gridGrid = gridGrid
@@ -107,10 +108,10 @@
     <span>Pencil</span>
   </label>
 
-  <label>
-    <input bind:checked={autoPencil} type="checkbox">
-    <span>Auto pencil</span>
-  </label>
+<!--  <label>-->
+<!--    <input bind:checked={autoPencil} type="checkbox">-->
+<!--    <span>Auto pencil</span>-->
+<!--  </label>-->
 </section>
 
 {#if selected && (selected.digit === '0' || selected.user)}
