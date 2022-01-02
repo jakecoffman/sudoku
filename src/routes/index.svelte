@@ -5,12 +5,13 @@
 
   import {scale, fade} from 'svelte/transition'
   import {stringToGrid, gridToString, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
-  import {hardGames} from "$lib/games.js";
+  import {easyGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
 
   const digits = ['1','2','3','4','5','6','7','8','9']
 
-  let displayGrid = stringToGrid(hardGames[getRandomInt(0, hardGames.length)])
+  let games = hardGames
+  let displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
   let gridGrid = gridToString(displayGrid)
 
   let paused = false
@@ -38,7 +39,7 @@
   function newGame() {
     end = false
     paused = false
-    displayGrid = stringToGrid(hardGames[getRandomInt(0, hardGames.length)])
+    displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
   }
 
   // select called when a user clicks a cell
@@ -154,7 +155,7 @@
 <!--</section>-->
 
 <section style="gap: 1rem; flex-direction: column; align-items: center">
-  <div>
+  <div style="display: flex; align-items: center">
     <button on:click={() => paused = !paused}>
       <Stopwatch/>
     </button>
@@ -175,25 +176,27 @@
       <div class="row">
         {#each digits as digit, i}
           <span class="cell" on:click={() => pick(digit)} class:selected={selected.pencil.includes(digit)}>
-            {digit}
+            <span>{digit}</span>
           </span>
         {/each}
-        <span class="cell" style="overflow: hidden"
+        <span class="cell"
               class:selected={usingPencil}
               on:click={() => usingPencil = !usingPencil}
         >
-          <Pencil/>
+          <span>
+            <Pencil/>
+          </span>
         </span>
-        <span class="cell">&nbsp;</span>
-        <span class="cell">&nbsp;</span>
+        <span class="cell"><span>&nbsp;</span></span>
+        <span class="cell"><span>&nbsp;</span></span>
       </div>
     </aside>
   </div>
 {/if}
 
 {#if end}
-  <div class="dialog" style="display: flex; align-items: center; justify-content: center;">
-    <aside style="padding: 1rem;">
+  <div class="dialog" style="display: flex; align-items: center; justify-content: center;" transition:fade>
+    <aside style="padding: 1rem; display: flex; flex-direction: column; gap: 1rem;">
       <h1>YOU WIN!</h1>
       <p>Time spent:</p>
       <Time bind:seconds={seconds}/>
@@ -223,10 +226,14 @@
 
   button {
       border-radius: 0;
-      border: none;
-      line-height: 1px;
+      border: 1px solid black;
+      padding-top: .5rem;
+      padding-bottom: .5rem;
       background: white;
       cursor: pointer;
+
+      display: flex;
+      justify-content: center;
   }
   button:hover {
       background: #d5d5d5;
@@ -241,7 +248,7 @@
   .board {
       padding: 5px;
       margin-top: 2rem;
-      min-width: 35rem;
+      width: 100%;
       border-radius: 10px;
 
       display: grid;
@@ -251,6 +258,11 @@
 
       box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
   }
+  @media (min-width: 650px) {
+      .board {
+          width: 35rem;
+      }
+  }
   .row {
       display: grid;
       grid-gap: 1px;
@@ -258,13 +270,27 @@
       background: var(--lg);
   }
   .cell {
-      /* aspect-ratio often breaks resizing */
-      aspect-ratio: 1/1;
+      position: relative;
+      box-sizing: border-box;
       background: white;
-      text-align: center;
-
       font-size: 2.5rem;
       cursor: pointer;
+  }
+  .cell:before {
+      content: '';
+      display: block;
+      padding-top: 100%;;
+  }
+  .cell > * {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
   }
   .candidates {
       display: grid;
@@ -274,6 +300,9 @@
   }
   .candidates * {
       pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
   }
   .selected {
       background: var(--blue);
