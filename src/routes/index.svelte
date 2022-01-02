@@ -4,7 +4,7 @@
   import Time from "$lib/Time.svelte";
 
   import {scale, fade} from 'svelte/transition'
-  import {stringToGrid, gridToString, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
+  import {stringToGrid, displayToGrid, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
   import {easyGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
 
@@ -12,7 +12,7 @@
 
   let games = hardGames
   let displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
-  let gridGrid = gridToString(displayGrid)
+  let gridGrid = displayToGrid(displayGrid)
 
   let paused = false
   setInterval(() => {
@@ -26,6 +26,7 @@
   let selected = null
   let target = null
   let end = false
+  let history = [JSON.parse(JSON.stringify(displayGrid))]
 
   onMount(() => {
     window.onblur = () => {
@@ -40,6 +41,8 @@
     end = false
     paused = false
     displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
+    gridGrid = displayToGrid(displayGrid)
+    history = [JSON.parse(JSON.stringify(displayGrid))]
   }
 
   // select called when a user clicks a cell
@@ -57,6 +60,7 @@
       }
       displayGrid = displayGrid
       gridGrid = gridGrid
+      history.push(JSON.parse(JSON.stringify(displayGrid)))
       return
     }
     selected = cell
@@ -84,6 +88,7 @@
     }
     displayGrid = displayGrid
     gridGrid = gridGrid
+    history.push(JSON.parse(JSON.stringify(displayGrid)))
 
     // check for win condition
     for (let row of displayGrid) {
@@ -109,6 +114,15 @@
     doAutoPencil(displayGrid, gridGrid)
     displayGrid = displayGrid
     gridGrid = gridGrid
+  }
+
+  function undo() {
+    if (history.length < 2) {
+      return
+    }
+    history.pop()
+    displayGrid = JSON.parse(JSON.stringify(history[history.length-1]))
+    gridGrid = displayToGrid(displayGrid)
   }
 </script>
 
@@ -155,6 +169,11 @@
 <!--</section>-->
 
 <section class="timebar">
+  <div>
+    <button on:click={undo}>
+      Undo
+    </button>
+  </div>
   <div style="display: flex; align-items: center">
     <button on:click={() => paused = !paused}>
       <Stopwatch/>
@@ -359,7 +378,7 @@
   }
   .timebar {
       gap: 1rem;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
   }
   @media (min-width: 650px) {

@@ -29,7 +29,7 @@ export function stringToGrid(string) {
   return grid
 }
 
-export function gridToString(board) {
+export function displayToGrid(board) {
   // TODO figure out how to roll this loop
   return [
       [board[0][0], board[0][1], board[0][2],
