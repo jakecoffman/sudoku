@@ -1,27 +1,49 @@
 <script>
   import Pencil from "$lib/Pencil.svelte";
-  import {scale} from 'svelte/transition'
+  import Stopwatch from "$lib/Stopwatch.svelte";
+  import Time from "$lib/Time.svelte";
+
+  import {scale, fade} from 'svelte/transition'
   import {stringToGrid, gridToString, setErrors, getRandomInt, clearSuperfluousPencilMarks} from "$lib/jake.js";
   import {hardGames} from "$lib/games.js";
+  import {onMount} from "svelte";
 
   const digits = ['1','2','3','4','5','6','7','8','9']
 
   let displayGrid = stringToGrid(hardGames[getRandomInt(0, hardGames.length)])
   let gridGrid = gridToString(displayGrid)
 
+  let paused = false
+  setInterval(() => {
+    if (!paused) {
+      seconds += 1
+    }
+  }, 1000)
+  let seconds = 0
   let usingPencil = false
   let autoPencil = false
   let selected = null
   let target = null
   let end = false
 
+  onMount(() => {
+    window.onblur = () => {
+      paused = true
+    }
+  })
+
   function newGame() {
     end = false
+    paused = false
     displayGrid = stringToGrid(hardGames[getRandomInt(0, hardGames.length)])
   }
 
   // select called when a user clicks a cell
   function select(event, cell) {
+    if (paused) {
+      return
+    }
+
     // user is clicking on a cell they've already entered something into: clear it
     if (cell.user && cell.digit !== '0') {
       cell.digit = '0'
@@ -36,21 +58,25 @@
 
   // pick called when a user clicks a digit on the popup dialog picker
   function pick(digit) {
+    if (paused) {
+      return
+    }
+
     if (usingPencil) {
       if (selected.pencil.includes(digit)) {
         selected.pencil = selected.pencil.filter(v => v !== digit)
       } else {
-        selected.pencil.push(digit)
+        selected.pencil = [...selected.pencil, digit]
       }
     } else {
       selected.digit = digit
       selected.user = true // indicate this wasn't part of the initial puzzle
       setErrors(displayGrid, gridGrid)
       clearSuperfluousPencilMarks(selected, displayGrid, gridGrid)
+      selected = null
     }
     displayGrid = displayGrid
     gridGrid = gridGrid
-    selected = null
 
     // check for win condition
     for (let row of displayGrid) {
@@ -59,6 +85,7 @@
       }
     }
     end = true
+    paused = true
   }
 </script>
 
@@ -68,7 +95,9 @@
     <div class="row">
     {#each group as cell, cellIndex}
       <div class="cell" class:selected={selected === cell} on:click={(e) => select(e, cell)}>
-        {#if cell.digit !== '0'}
+        {#if paused}
+          <span></span>
+        {:else if cell.digit !== '0'}
           <span class:user={cell.user} class:error={cell.error}>
             {cell.digit}
           </span>
@@ -103,11 +132,10 @@
 <!--</section>-->
 
 <section style="gap: 1rem">
-  <label>
-    <input bind:checked={usingPencil} type="checkbox">
-    <span>Pencil</span>
-  </label>
-
+  <button on:click={() => paused = !paused}>
+    <Stopwatch/>
+  </button>
+  <Time bind:seconds={seconds}/>
 <!--  <label>-->
 <!--    <input bind:checked={autoPencil} type="checkbox">-->
 <!--    <span>Auto pencil</span>-->
@@ -115,14 +143,14 @@
 </section>
 
 {#if selected && (selected.digit === '0' || selected.user)}
-  <div class="dialog" on:click={() => selected = null}>
+  <div class="dialog" on:click={() => selected = null} transition:fade>
     <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;"
            transition:scale
            on:click={e => e.stopPropagation()}
     >
       <div class="row">
         {#each digits as digit, i}
-          <span class="cell picker" on:click={() => pick(digit)}>
+          <span class="cell" on:click={() => pick(digit)} class:selected={selected.pencil.includes(digit)}>
             {digit}
           </span>
         {/each}
@@ -143,6 +171,8 @@
   <div class="dialog" style="display: flex; align-items: center; justify-content: center;">
     <aside style="padding: 1rem;">
       <h1>YOU WIN!</h1>
+      <p>Time spent:</p>
+      <Time bind:seconds={seconds}/>
       <button on:click={newGame}>
         New game
       </button>
@@ -167,6 +197,17 @@
       --blue: #2979fb;
   }
 
+  button {
+      border-radius: 0;
+      border: none;
+      line-height: 1px;
+      background: white;
+      cursor: pointer;
+  }
+  button:hover {
+      background: #d5d5d5;
+  }
+
   section {
       display: flex;
       justify-content: center;
@@ -174,9 +215,10 @@
   }
 
   .board {
+      padding: 5px;
       margin-top: 2rem;
       min-width: 35rem;
-      border-radius: 5px;
+      border-radius: 10px;
 
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -230,13 +272,10 @@
       background: white;
       border: 1px solid black;
       border-radius: 5px;
+      padding: 2px;
       box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
   }
   aside .cell {
       font-size: 20pt;
-  }
-  .picker:hover {
-      background: var(--blue);
-      cursor: pointer;
   }
 </style>
