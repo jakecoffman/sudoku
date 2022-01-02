@@ -1,34 +1,31 @@
 <script>
   import {scale} from 'svelte/transition'
-  import {sudoku, DIFFICULTY} from "$lib/sudoku.js";
-  import {stringToGrid, gridToString} from "$lib/jake.js";
+  import {stringToGrid, gridToString, setErrors} from "$lib/jake.js";
+  import {expertGames} from "$lib/games.js";
 
-  let difficulty = DIFFICULTY.hard
-  let board = sudoku.generate(difficulty)
-  let grid = stringToGrid(board)
-  let candidates = stringToGrid(sudoku.get_candidates(board).flat())
+  const digits = ['1','2','3','4','5','6','7','8','9']
 
-  let showCandidates = false
+  let displayGrid = stringToGrid(expertGames[0])
+  let gridGrid = gridToString(displayGrid)
+
+  let autoPencil = false
   let selected = null
   let target = null
   let end = false
 
   function newGame() {
     end = false
-    board = sudoku.generate(difficulty)
-    grid = stringToGrid(board)
-    candidates = stringToGrid(sudoku.get_candidates(board).flat())
+    displayGrid = stringToGrid(expertGames[0])
   }
 
   // select called when a user clicks a cell
   function select(event, cell) {
     // user is clicking on a cell they've already entered something into: clear it
-    if (cell.user && cell.digit !== '.') {
-      cell.digit = '.'
-      cell.error = false
-      grid = grid
-      board = gridToString(grid)
-      candidates = stringToGrid(sudoku.get_candidates(board).flat())
+    if (cell.user && cell.digit !== '0') {
+      cell.digit = '0'
+      setErrors(displayGrid, gridGrid)
+      displayGrid = displayGrid
+      gridGrid = gridGrid
       return
     }
     selected = cell
@@ -39,16 +36,13 @@
   function pick(digit) {
     selected.digit = digit
     selected.user = true // indicate this wasn't part of the initial puzzle
-    // error if it wasn't a possible candidate
-    selected.error = !Array.from(candidates[selected.groupIndex][selected.cellIndex].digit).includes(digit)
-    if (!selected.error) {
-      // recalculate to remove impossible pencil marks
-      board = gridToString(grid)
-      candidates = stringToGrid(sudoku.get_candidates(board).flat())
-    }
+    setErrors(displayGrid, gridGrid)
 
-    for (let row of grid) {
-      if (row.some(v => v.digit === '.' || v.error)) {
+    displayGrid = displayGrid
+    gridGrid = gridGrid
+
+    for (let row of displayGrid) {
+      if (row.some(v => v.digit === '0' || v.error)) {
         return
       }
     }
@@ -58,27 +52,27 @@
 
 <section>
   <div class="board">
-  {#each grid as group, groupIndex}
+  {#each displayGrid as group, groupIndex}
     <div class="row">
     {#each group as cell, cellIndex}
       <div class="cell"
            class:selected={selected === cell}
            on:click={(e) => select(e, cell)}
       >
-        {#if cell.digit !== '.'}
+        {#if cell.digit !== '0'}
           <span class:user={cell.user}
                 class:error={cell.error}
           >
             {cell.digit}
           </span>
-        {:else if showCandidates}
+        {:else if autoPencil}
           <div class="candidates">
-            {#each sudoku.DIGITS as v, i}
-              {#if candidates[groupIndex][cellIndex].digit.includes(v)}
-                <span>{v}</span>
-              {:else}
+            {#each digits as v, i}
+              <!--{#if candidates[groupIndex][cellIndex].digit.includes(v)}-->
+<!--                <span>{v}</span>-->
+<!--              {:else}-->
                 <span>&nbsp;</span>
-              {/if}
+              <!--{/if}-->
             {/each}
           </div>
         {/if}
@@ -89,30 +83,30 @@
   </div>
 </section>
 
-<section>
-  <fieldset style="border: 1px solid black">
-    <legend>Difficulty</legend>
-    {#each Object.entries(DIFFICULTY) as diff}
-    <label>
-      <input type=radio bind:group={difficulty} name="difficulty" value={diff[1]} on:change={newGame}>
-      {diff[0]}
-    </label>
-    {/each}
-  </fieldset>
-</section>
+<!--<section>-->
+<!--  <fieldset style="border: 1px solid black">-->
+<!--    <legend>Difficulty</legend>-->
+<!--    {#each Object.entries(DIFFICULTY) as diff}-->
+<!--    <label>-->
+<!--      <input type=radio bind:group={difficulty} name="difficulty" value={diff[1]} on:change={newGame}>-->
+<!--      {diff[0]}-->
+<!--    </label>-->
+<!--    {/each}-->
+<!--  </fieldset>-->
+<!--</section>-->
 
 <section>
   <label>
-    <input bind:checked={showCandidates} type="checkbox">
-    <span>Show all candidates</span>
+    <input bind:checked={autoPencil} type="checkbox">
+    <span>Auto pencil</span>
   </label>
 </section>
 
-{#if selected && (selected.digit === '.' || selected.user)}
+{#if selected && (selected.digit === '0' || selected.user)}
   <div class="dialog" on:click={() => selected = null}>
     <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;" transition:scale>
       <div class="row">
-        {#each sudoku.DIGITS as digit, i}
+        {#each digits as digit, i}
           <span class="cell picker" on:click={() => pick(digit)}>
             {digit}
           </span>
