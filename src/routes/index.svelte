@@ -2,11 +2,14 @@
   import Pencil from "$lib/Pencil.svelte";
   import Stopwatch from "$lib/Stopwatch.svelte";
   import Time from "$lib/Time.svelte";
+  import Gear from "$lib/Gear.svelte";
+  import Pause from "$lib/Pause.svelte";
 
   import {scale, fade} from 'svelte/transition'
   import {stringToGrid, displayToGrid, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
   import {easyGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
+  import Undo from "$lib/Undo.svelte";
 
   const digits = ['1','2','3','4','5','6','7','8','9']
 
@@ -27,6 +30,7 @@
   let target = null
   let end = false
   let history = []
+  let showSettings = false
 
   onMount(() => {
     let str = localStorage.getItem('history')
@@ -190,42 +194,38 @@
 <section class="timebar">
   <div>
     <button on:click={undo}>
-      Undo
+      <Undo/>
     </button>
   </div>
-  <div style="display: flex; align-items: center">
-    <button on:click={() => paused = !paused}>
+  <button class="flex gap-25" on:click={() => paused = !paused}>
+    {#if paused}
+      <Pause/>
+    {:else}
       <Stopwatch/>
-    </button>
+    {/if}
     <Time bind:seconds={seconds}/>
-  </div>
-  <label>
-    <input bind:checked={autoPencil} on:click={updateAutoPencil} type="checkbox">
-    <span>Auto pencil</span>
-  </label>
-  <label>
-    <button on:click={() => confirm('Start a new game?') && newGame()}>
-      New Game
-    </button>
-  </label>
+  </button>
+  <button on:click={() => showSettings = !showSettings}>
+    <Gear/>
+  </button>
 </section>
 
 <div class="mobile">
   {#each digits as digit, i}
-    <span on:click={() => pick(digit)} class:selected={selected?.pencil?.includes(digit)}>
-      {digit}
+    <span class="flex center justify-center" on:click={() => pick(digit)} class:selected={selected?.pencil?.includes(digit)}>
+      <span>{digit}</span>
     </span>
   {/each}
   <span
         class:selected={usingPencil}
         on:click={() => usingPencil = !usingPencil}
   >
-    <span>
-      <Pencil/>
+    <span class="flex center justify-center">
+      <span><Pencil/></span>
     </span>
   </span>
-  <span><span>&nbsp;</span></span>
-  <span><span>&nbsp;</span></span>
+  <span>&nbsp;</span>
+  <span>&nbsp;</span>
 </div>
 
 {#if selected && (selected.digit === '0' || selected.user)}
@@ -256,14 +256,31 @@
 {/if}
 
 {#if end}
-  <div class="dialog" style="display: flex; align-items: center; justify-content: center;" transition:fade>
-    <aside style="padding: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+  <div class="dialog flex center justify-center" transition:fade>
+    <aside style="padding: 1rem; display: flex; flex-direction: column; gap: 1rem;" transition:scale>
       <h1>YOU WIN!</h1>
       <p>Time spent:</p>
       <Time bind:seconds={seconds}/>
       <button on:click={newGame}>
         New game
       </button>
+    </aside>
+  </div>
+{/if}
+
+{#if showSettings}
+  <div class="dialog flex center justify-center" on:click={() => showSettings = !showSettings} transition:fade>
+    <aside class="flex column settings" transition:scale>
+      <h2>Settings</h2>
+      <label>
+        <input bind:checked={autoPencil} on:click={updateAutoPencil} type="checkbox">
+        <span>Auto pencil</span>
+      </label>
+      <label>
+        <button on:click={() => confirm('Start a new game?') && newGame()}>
+          New Game
+        </button>
+      </label>
     </aside>
   </div>
 {/if}
@@ -286,8 +303,8 @@
   }
 
   button {
-      border-radius: 0;
-      border: 1px solid black;
+      border-radius: 5px;
+      border: 1px solid var(--lg);
       padding-top: .5rem;
       padding-bottom: .5rem;
       background: white;
@@ -295,15 +312,45 @@
 
       display: flex;
       justify-content: center;
+
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%) !important;
   }
   button:hover {
       background: #d5d5d5;
   }
 
+  .flex {
+      display: flex;
+  }
+  .column {
+      flex-direction: column;
+  }
+  .center {
+      align-items: center;
+  }
+  .justify-center {
+      justify-content: center;
+  }
+  .gap-25 {
+      gap: .25rem;
+  }
+  .gap-1 {
+      gap: 1rem;
+  }
+
+  .settings {
+      padding: 1rem 3rem;
+      gap: 2rem;
+  }
+  .settings > h2 {
+      padding: 0;
+      margin: 0;
+  }
+
   section {
       display: flex;
       justify-content: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
   }
 
   .board {
@@ -379,10 +426,10 @@
   }
   aside {
       background: white;
-      border: 1px solid black;
+      border: 1px solid var(--lg);
       border-radius: 5px;
       padding: 2px;
-      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 70%);
   }
   aside .cell {
       font-size: 20pt;
@@ -422,6 +469,11 @@
       }
       .mobile {
           display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-rows: 1fr 1fr 1fr 1fr;
+          border: 1px solid var(--lg);
+          border-radius: 5px;
+          padding: 5px;
       }
       .board {
           margin-top: 0;

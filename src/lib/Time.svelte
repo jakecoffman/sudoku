@@ -9,6 +9,6 @@
 
 <style>
   code {
-      font-size: 24pt;
+      font-size: 16pt;
   }
 </style>
