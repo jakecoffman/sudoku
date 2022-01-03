@@ -8,15 +8,14 @@
 
   import {scale, fade} from 'svelte/transition'
   import {stringToGrid, displayToGrid, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
-  import {easyGames, hardGames} from "$lib/games.js";
+  import {easyGames, mediumGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
   import Undo from "$lib/Undo.svelte";
 
   const digits = ['1','2','3','4','5','6','7','8','9']
-  const DIFFICULTY = ['hard']
-  let difficulty = 'hard'
+  const DIFFICULTY = ['easy', 'medium', 'hard']
+  let difficulty
 
-  let games = hardGames
   let displayGrid = stringToGrid('000000000000000000000000000000000000000000000000000000000000000000000000000000000')
   let gridGrid = displayToGrid(displayGrid)
 
@@ -45,6 +44,10 @@
         seconds = Number(localStorage.getItem('seconds'))
       }
     } else {
+      difficulty = localStorage.getItem('difficulty')
+      if (!difficulty) {
+        difficulty = 'hard'
+      }
       newGame()
     }
 
@@ -52,7 +55,9 @@
       paused = true
     }
     window.onfocus = () => {
-      paused = false
+      if (!end) {
+        paused = false
+      }
     }
     window.onbeforeunload = () => {
       console.log(seconds)
@@ -61,12 +66,28 @@
   })
 
   function newGame() {
+    seconds = 0
     end = false
     paused = false
+    let games
+    switch (difficulty) {
+      case 'easy':
+        games = easyGames
+        break
+      case 'medium':
+        games = mediumGames
+        break
+      case 'hard':
+        games = hardGames
+        break
+      default:
+        return
+    }
     displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
     gridGrid = displayToGrid(displayGrid)
     history = [JSON.parse(JSON.stringify(displayGrid))]
     localStorage.setItem('history', JSON.stringify(history))
+    localStorage.setItem('difficulty', difficulty)
   }
 
   // select called when a user clicks a cell
@@ -245,7 +266,7 @@
 
 {#if end}
   <div class="dialog flex center justify-center" transition:fade>
-    <aside style="padding: 1rem; display: flex; flex-direction: column; gap: 1rem;" transition:scale>
+    <aside class="flex column center justify-center settings" transition:scale>
       <h1>YOU WIN!</h1>
       <p>Time spent:</p>
       <Time bind:seconds={seconds}/>
