@@ -34,6 +34,9 @@
       history = JSON.parse(str)
       displayGrid = history[history.length-1]
       gridGrid = displayToGrid(displayGrid)
+      if (localStorage.getItem('seconds')) {
+        seconds = Number(localStorage.getItem('seconds'))
+      }
     } else {
       newGame()
     }
@@ -43,6 +46,10 @@
     }
     window.onfocus = () => {
       paused = false
+    }
+    window.onbeforeunload = () => {
+      console.log(seconds)
+      localStorage.setItem('seconds', seconds.toString())
     }
   })
 
