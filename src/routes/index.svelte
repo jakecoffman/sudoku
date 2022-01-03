@@ -188,17 +188,18 @@
           <span class:user={cell.user}
                 class:error={cell.error}
                 class:highlight={selected !== cell && selected?.digit === cell.digit}
+                out:fade={{delay: 100}}
           >
             {cell.digit}
           </span>
         {:else}
           <div class="candidates">
             {#each digits as v, i}
-              {#if cell.pencil.includes(v)}
-                <span>{v}</span>
-              {:else}
-                <span>&nbsp;</span>
-              {/if}
+              {#key v}
+              <span transition:fade={{duration: 100}}>
+                { cell.pencil.includes(v) ? v : ' '}
+              </span>
+              {/key}
             {/each}
           </div>
         {/if}
