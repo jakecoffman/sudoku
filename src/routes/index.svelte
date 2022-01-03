@@ -11,7 +11,7 @@
   const digits = ['1','2','3','4','5','6','7','8','9']
 
   let games = hardGames
-  let displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
+  let displayGrid = stringToGrid('000000000000000000000000000000000000000000000000000000000000000000000000000000000')
   let gridGrid = displayToGrid(displayGrid)
 
   let paused = false
@@ -29,6 +29,16 @@
   let history = [JSON.parse(JSON.stringify(displayGrid))]
 
   onMount(() => {
+    let historyString = localStorage.getItem('history')
+    if (historyString) {
+      history = JSON.parse(historyString)
+      displayGrid = history[history.length-1]
+      gridGrid = displayToGrid(displayGrid)
+    } else {
+      newGame()
+      localStorage.setItem('history', JSON.stringify(history))
+    }
+
     window.onblur = () => {
       paused = true
     }
@@ -43,6 +53,7 @@
     displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
     gridGrid = displayToGrid(displayGrid)
     history = [JSON.parse(JSON.stringify(displayGrid))]
+    localStorage.setItem('history', JSON.stringify(history))
   }
 
   // select called when a user clicks a cell
@@ -61,6 +72,7 @@
       displayGrid = displayGrid
       gridGrid = gridGrid
       history.push(JSON.parse(JSON.stringify(displayGrid)))
+      localStorage.setItem('history', JSON.stringify(history))
       return
     }
     selected = cell
@@ -89,6 +101,7 @@
     displayGrid = displayGrid
     gridGrid = gridGrid
     history.push(JSON.parse(JSON.stringify(displayGrid)))
+    localStorage.setItem('history', JSON.stringify(history))
 
     // check for win condition
     for (let row of displayGrid) {
@@ -123,6 +136,7 @@
     history.pop()
     displayGrid = JSON.parse(JSON.stringify(history[history.length-1]))
     gridGrid = displayToGrid(displayGrid)
+    localStorage.setItem('history', JSON.stringify(history))
   }
 </script>
 
@@ -183,6 +197,11 @@
   <label>
     <input bind:checked={autoPencil} on:click={updateAutoPencil} type="checkbox">
     <span>Auto pencil</span>
+  </label>
+  <label>
+    <button on:click={() => confirm('Start a new game?') && newGame()}>
+      New Game
+    </button>
   </label>
 </section>
 
