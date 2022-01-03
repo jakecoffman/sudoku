@@ -96,21 +96,25 @@
       return
     }
 
-    // user is clicking on a cell they've already entered something into: clear it
-    if (cell.user && cell.digit !== '0') {
-      cell.digit = '0'
-      setErrors(displayGrid, gridGrid)
-      if (autoPencil) {
-        doAutoPencil(displayGrid, gridGrid)
-      }
-      displayGrid = displayGrid
-      gridGrid = gridGrid
-      history.push(JSON.parse(JSON.stringify(displayGrid)))
-      localStorage.setItem('history', JSON.stringify(history))
-      return
-    }
     selected = cell
     target = event.target.getBoundingClientRect()
+  }
+
+  // user clicked X on the numpad
+  function clear() {
+    if (!selected.user) {
+      return
+    }
+    selected.digit = '0'
+    setErrors(displayGrid, gridGrid)
+    if (autoPencil) {
+      doAutoPencil(displayGrid, gridGrid)
+    }
+    displayGrid = displayGrid
+    gridGrid = gridGrid
+    history.push(JSON.parse(JSON.stringify(displayGrid)))
+    localStorage.setItem('history', JSON.stringify(history))
+    selected = null
   }
 
   // pick called when a user clicks a digit on the popup dialog picker
@@ -127,7 +131,6 @@
       }
     } else {
       selected.digit = digit
-      selected.user = true // indicate this wasn't part of the initial puzzle
       setErrors(displayGrid, gridGrid)
       clearSuperfluousPencilMarks(selected, displayGrid, gridGrid)
       selected = null
@@ -179,10 +182,13 @@
     <div class="row">
     {#each group as cell, cellIndex}
       <div class="cell" class:selected={selected === cell} on:click={(e) => select(e, cell)}>
-        {#if paused}
+        {#if paused && !end}
           <span></span>
         {:else if cell.digit !== '0'}
-          <span class:user={cell.user} class:error={cell.error}>
+          <span class:user={cell.user}
+                class:error={cell.error}
+                class:highlight={selected !== cell && selected?.digit === cell.digit}
+          >
             {cell.digit}
           </span>
         {:else}
@@ -220,19 +226,30 @@
   <button on:click={() => showSettings = !showSettings}>
     <Gear/>
   </button>
-  <button class:selected={usingPencil}
-          on:click={() => usingPencil = !usingPencil}
-  >
-    <Pencil/>
-  </button>
+<!--  <button class:selected={usingPencil}-->
+<!--          on:click={() => usingPencil = !usingPencil}-->
+<!--  >-->
+<!--    <Pencil/>-->
+<!--  </button>-->
 </section>
 
 <div class="mobile">
   {#each digits as digit, i}
-    <span class="flex center justify-center" on:click={() => pick(digit)} class:selected={selected?.pencil?.includes(digit)}>
+    <span class="flex center justify-center"
+          on:click={() => pick(digit)}
+          class:selected={selected?.user && selected?.pencil?.includes(digit)}
+    >
       <span>{digit}</span>
     </span>
   {/each}
+  <span class:selected={usingPencil}
+        on:click={() => usingPencil = !usingPencil}>
+    <Pencil/>
+  </span>
+  <span></span>
+  <span on:click={clear}>
+    <Close/>
+  </span>
 </div>
 
 {#if selected && (selected.digit === '0' || selected.user)}
@@ -256,7 +273,7 @@
           </span>
         </span>
         <span class="cell"><span>&nbsp;</span></span>
-        <span class="cell" on:click={() => selected = null} title="close">
+        <span class="cell" on:click={clear} title="close">
           <span><Close/></span>
         </span>
       </div>
@@ -427,6 +444,9 @@
   }
   .selected {
       background: var(--blue) !important;
+  }
+  .highlight {
+      background: #ffb460;
   }
   .user {
       color: #2979fb;

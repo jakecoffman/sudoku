@@ -9,23 +9,32 @@ export function stringToGrid(string) {
   let jump = 0
   for (let i = 0; i < arr.length; i+=3) {
     grid.push([
-      {digit: arr[i], cellIndex: 0, groupIndex: jump, pencil: []},
-      {digit: arr[i+1], cellIndex: 1, groupIndex: jump, pencil: []},
-      {digit: arr[i+2], cellIndex: 2, groupIndex: jump, pencil: []},
+      {digit: arr[i], cellIndex: 0, groupIndex: jump},
+      {digit: arr[i+1], cellIndex: 1, groupIndex: jump},
+      {digit: arr[i+2], cellIndex: 2, groupIndex: jump},
 
-      {digit: arr[i+9], cellIndex: 3, groupIndex: jump, pencil: []},
-      {digit: arr[i+1+9], cellIndex: 4, groupIndex: jump, pencil: []},
-      {digit: arr[i+2+9], cellIndex: 5, groupIndex: jump, pencil: []},
+      {digit: arr[i+9], cellIndex: 3, groupIndex: jump},
+      {digit: arr[i+1+9], cellIndex: 4, groupIndex: jump},
+      {digit: arr[i+2+9], cellIndex: 5, groupIndex: jump},
 
-      {digit: arr[i+18], cellIndex: 6, groupIndex: jump, pencil: []},
-      {digit: arr[i+1+18], cellIndex: 7, groupIndex: jump, pencil: []},
-      {digit: arr[i+2+18], cellIndex: 8, groupIndex: jump, pencil: []},
+      {digit: arr[i+18], cellIndex: 6, groupIndex: jump},
+      {digit: arr[i+1+18], cellIndex: 7, groupIndex: jump},
+      {digit: arr[i+2+18], cellIndex: 8, groupIndex: jump},
     ])
     jump++
     if (jump % 3 === 0) {
       i += 18
     }
   }
+
+  grid.forEach(group => {
+    group.forEach(cell => {
+      // indicate which cell the users are entering, so they can't change the puzzle
+      cell.user = cell.digit === '0'
+      cell.pencil = []
+    })
+  })
+
   return grid
 }
 
