@@ -35,6 +35,11 @@
   let showSettings = false
 
   onMount(() => {
+    difficulty = localStorage.getItem('difficulty')
+    if (!difficulty) {
+      difficulty = 'hard'
+    }
+
     let str = localStorage.getItem('history')
     if (str) {
       history = JSON.parse(str)
@@ -44,10 +49,6 @@
         seconds = Number(localStorage.getItem('seconds'))
       }
     } else {
-      difficulty = localStorage.getItem('difficulty')
-      if (!difficulty) {
-        difficulty = 'hard'
-      }
       newGame()
     }
 
@@ -60,7 +61,6 @@
       }
     }
     window.onbeforeunload = () => {
-      console.log(seconds)
       localStorage.setItem('seconds', seconds.toString())
     }
   })
@@ -289,7 +289,7 @@
         <legend>Difficulty</legend>
         {#each DIFFICULTY as diff}
         <label>
-          <input type=radio bind:group={difficulty} name="difficulty" value={diff} on:change={newGame}>
+          <input type=radio bind:group={difficulty} name="difficulty" value={diff}>
           {diff}
         </label>
         {/each}
