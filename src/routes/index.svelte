@@ -4,6 +4,7 @@
   import Time from "$lib/Time.svelte";
   import Gear from "$lib/Gear.svelte";
   import Pause from "$lib/Pause.svelte";
+  import Close from "$lib/Close.svelte";
 
   import {scale, fade} from 'svelte/transition'
   import {stringToGrid, displayToGrid, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
@@ -12,6 +13,8 @@
   import Undo from "$lib/Undo.svelte";
 
   const digits = ['1','2','3','4','5','6','7','8','9']
+  const DIFFICULTY = ['hard']
+  let difficulty = 'hard'
 
   let games = hardGames
   let displayGrid = stringToGrid('000000000000000000000000000000000000000000000000000000000000000000000000000000000')
@@ -179,18 +182,6 @@
   </div>
 </section>
 
-<!--<section>-->
-<!--  <fieldset style="border: 1px solid black">-->
-<!--    <legend>Difficulty</legend>-->
-<!--    {#each Object.entries(DIFFICULTY) as diff}-->
-<!--    <label>-->
-<!--      <input type=radio bind:group={difficulty} name="difficulty" value={diff[1]} on:change={newGame}>-->
-<!--      {diff[0]}-->
-<!--    </label>-->
-<!--    {/each}-->
-<!--  </fieldset>-->
-<!--</section>-->
-
 <section class="timebar">
   <div>
     <button on:click={undo}>
@@ -208,6 +199,11 @@
   <button on:click={() => showSettings = !showSettings}>
     <Gear/>
   </button>
+  <button class:selected={usingPencil}
+          on:click={() => usingPencil = !usingPencil}
+  >
+    <Pencil/>
+  </button>
 </section>
 
 <div class="mobile">
@@ -216,16 +212,6 @@
       <span>{digit}</span>
     </span>
   {/each}
-  <span
-        class:selected={usingPencil}
-        on:click={() => usingPencil = !usingPencil}
-  >
-    <span class="flex center justify-center">
-      <span><Pencil/></span>
-    </span>
-  </span>
-  <span>&nbsp;</span>
-  <span>&nbsp;</span>
 </div>
 
 {#if selected && (selected.digit === '0' || selected.user)}
@@ -240,7 +226,7 @@
             <span>{digit}</span>
           </span>
         {/each}
-        <span class="cell"
+        <span class="cell" title="toggle pencil"
               class:selected={usingPencil}
               on:click={() => usingPencil = !usingPencil}
         >
@@ -249,7 +235,9 @@
           </span>
         </span>
         <span class="cell"><span>&nbsp;</span></span>
-        <span class="cell"><span>&nbsp;</span></span>
+        <span class="cell" on:click={() => selected = null} title="close">
+          <span><Close/></span>
+        </span>
       </div>
     </aside>
   </div>
@@ -270,12 +258,21 @@
 
 {#if showSettings}
   <div class="dialog flex center justify-center" on:click={() => showSettings = !showSettings} transition:fade>
-    <aside class="flex column settings" transition:scale>
+    <aside class="flex column center justify-center settings" transition:scale>
       <h2>Settings</h2>
       <label>
         <input bind:checked={autoPencil} on:click={updateAutoPencil} type="checkbox">
         <span>Auto pencil</span>
       </label>
+      <fieldset style="border: 1px solid black">
+        <legend>Difficulty</legend>
+        {#each DIFFICULTY as diff}
+        <label>
+          <input type=radio bind:group={difficulty} name="difficulty" value={diff} on:change={newGame}>
+          {diff}
+        </label>
+        {/each}
+      </fieldset>
       <label>
         <button on:click={() => confirm('Start a new game?') && newGame()}>
           New Game
@@ -299,7 +296,7 @@
 <style>
   :root {
       --lg: #d5d5d5;
-      --blue: #2979fb;
+      --blue: #6ca2ff;
   }
 
   button {
@@ -470,7 +467,7 @@
       .mobile {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
-          grid-template-rows: 1fr 1fr 1fr 1fr;
+          grid-template-rows: 1fr 1fr 1fr;
           border: 1px solid var(--lg);
           border-radius: 5px;
           padding: 5px;
@@ -481,5 +478,9 @@
       .desktop {
           display: none;
       }
+  }
+  fieldset {
+      border-radius: 5px;
+      border: 1px solid var(--lg);
   }
 </style>
