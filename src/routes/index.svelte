@@ -26,17 +26,16 @@
   let selected = null
   let target = null
   let end = false
-  let history = [JSON.parse(JSON.stringify(displayGrid))]
+  let history = []
 
   onMount(() => {
-    let historyString = localStorage.getItem('history')
-    if (historyString) {
-      history = JSON.parse(historyString)
+    let str = localStorage.getItem('history')
+    if (str) {
+      history = JSON.parse(str)
       displayGrid = history[history.length-1]
       gridGrid = displayToGrid(displayGrid)
     } else {
       newGame()
-      localStorage.setItem('history', JSON.stringify(history))
     }
 
     window.onblur = () => {
@@ -136,7 +135,6 @@
     history.pop()
     displayGrid = JSON.parse(JSON.stringify(history[history.length-1]))
     gridGrid = displayToGrid(displayGrid)
-    localStorage.setItem('history', JSON.stringify(history))
   }
 </script>
 
