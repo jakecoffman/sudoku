@@ -284,7 +284,7 @@
 
 {#if end}
   <div class="dialog flex center justify-center" transition:fade>
-    <aside class="flex column center justify-center settings" transition:scale>
+    <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()}>
       <h1>YOU WIN!</h1>
       <p>Time spent:</p>
       <Time bind:seconds={seconds}/>
@@ -297,7 +297,7 @@
 
 {#if showSettings}
   <div class="dialog flex center justify-center" on:click={() => showSettings = !showSettings} transition:fade>
-    <aside class="flex column center justify-center settings" transition:scale>
+    <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()}>
       <h2>Settings</h2>
       <label>
         <input bind:checked={autoPencil} on:click={updateAutoPencil} type="checkbox">
