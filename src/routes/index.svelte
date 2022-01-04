@@ -254,9 +254,9 @@
 </div>
 
 {#if selected && (selected.digit === '0' || selected.user)}
-  <div class="dialog desktop" on:click={() => selected = null} transition:fade>
+  <div class="dialog desktop" on:click={() => selected = null} in:fade>
     <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;"
-           transition:scale
+           in:scale
            on:click={e => e.stopPropagation()}
     >
       <div class="row">
@@ -369,9 +369,6 @@
   }
   .gap-25 {
       gap: .25rem;
-  }
-  .gap-1 {
-      gap: 1rem;
   }
 
   .settings {
