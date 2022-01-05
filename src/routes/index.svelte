@@ -1,16 +1,16 @@
 <script>
-  import Pencil from "$lib/Pencil.svelte";
-  import Stopwatch from "$lib/Stopwatch.svelte";
+  import Pencil from "$lib/icons/Pencil.svelte";
+  import Stopwatch from "$lib/icons/Stopwatch.svelte";
   import Time from "$lib/Time.svelte";
-  import Gear from "$lib/Gear.svelte";
-  import Pause from "$lib/Pause.svelte";
-  import Close from "$lib/Close.svelte";
+  import Gear from "$lib/icons/Gear.svelte";
+  import Pause from "$lib/icons/Pause.svelte";
+  import Close from "$lib/icons/Close.svelte";
 
   import {scale, fade} from 'svelte/transition'
   import {stringToGrid, displayToGrid, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
   import {easyGames, mediumGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
-  import Undo from "$lib/Undo.svelte";
+  import Undo from "$lib/icons/Undo.svelte";
 
   const digits = ['1','2','3','4','5','6','7','8','9']
   const DIFFICULTY = ['easy', 'medium', 'hard']
