@@ -7,12 +7,12 @@
   import Close from "$lib/icons/Close.svelte";
 
   import {scale, fade} from 'svelte/transition'
-  import {stringToGrid, displayToGrid, setErrors, getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
+  import {digits, stringToGrid, displayToGrid, setErrors,
+    getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
   import {easyGames, mediumGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
   import Undo from "$lib/icons/Undo.svelte";
 
-  const digits = ['1','2','3','4','5','6','7','8','9']
   const DIFFICULTY = ['easy', 'medium', 'hard']
   let difficulty
 
@@ -39,11 +39,12 @@
     if (!difficulty) {
       difficulty = 'hard'
     }
+    autoPencil = localStorage.getItem('autoPencil') === 'true'
 
     let str = localStorage.getItem('history')
     if (str) {
       history = JSON.parse(str)
-      displayGrid = history[history.length-1]
+      displayGrid = JSON.parse(JSON.stringify(history[history.length-1]))
       gridGrid = displayToGrid(displayGrid)
       if (localStorage.getItem('seconds')) {
         seconds = Number(localStorage.getItem('seconds'))
@@ -69,6 +70,7 @@
     seconds = 0
     end = false
     paused = false
+    showSettings = false
     let games
     switch (difficulty) {
       case 'easy':
@@ -85,6 +87,9 @@
     }
     displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
     gridGrid = displayToGrid(displayGrid)
+    if (autoPencil) {
+      doAutoPencil(displayGrid, gridGrid)
+    }
     history = [JSON.parse(JSON.stringify(displayGrid))]
     localStorage.setItem('history', JSON.stringify(history))
     localStorage.setItem('difficulty', difficulty)
@@ -152,6 +157,7 @@
 
   function updateAutoPencil() {
     // this looks backwards, but the svelte click hasn't fired yet
+    localStorage.setItem('autoPencil', (!autoPencil).toString())
     if (autoPencil) {
       for (let row of displayGrid) {
         for (let cell of row) {
@@ -159,9 +165,13 @@
         }
       }
       displayGrid = displayGrid
+      history.push(JSON.parse(JSON.stringify(displayGrid)))
+      localStorage.setItem('history', JSON.stringify(history))
       return
     }
     doAutoPencil(displayGrid, gridGrid)
+    history.push(JSON.parse(JSON.stringify(displayGrid)))
+    localStorage.setItem('history', JSON.stringify(history))
     displayGrid = displayGrid
     gridGrid = gridGrid
   }
@@ -227,11 +237,6 @@
   <button on:click={() => showSettings = !showSettings}>
     <Gear/>
   </button>
-<!--  <button class:selected={usingPencil}-->
-<!--          on:click={() => usingPencil = !usingPencil}-->
-<!--  >-->
-<!--    <Pencil/>-->
-<!--  </button>-->
 </section>
 
 <div class="mobile">
@@ -380,13 +385,13 @@
       margin: 0;
   }
 
-  section {
+  :global(section) {
       display: flex;
       justify-content: center;
       margin-bottom: 1rem;
   }
 
-  .board {
+  :global(.board) {
       padding: 5px;
       margin-top: 2rem;
       width: 100%;
@@ -399,25 +404,25 @@
 
       box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
   }
-  .row {
+  :global(.row) {
       display: grid;
       grid-gap: 1px;
       grid-template-columns: 1fr 1fr 1fr;
       background: var(--lg);
   }
-  .cell {
+  :global(.cell) {
       position: relative;
       box-sizing: border-box;
       background: white;
       font-size: 2.5rem;
       cursor: pointer;
   }
-  .cell:before {
+  :global(.cell:before) {
       content: '';
       display: block;
       padding-top: 100%;;
   }
-  .cell > * {
+  :global(.cell > *) {
       position: absolute;
       top: 0;
       left: 0;
@@ -428,13 +433,13 @@
       align-items: center;
       justify-content: center;
   }
-  .candidates {
+  :global(.candidates) {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       font-size: .9rem;
       pointer-events: none;
   }
-  .candidates * {
+  :global(.candidates *) {
       pointer-events: none;
       display: flex;
       align-items: center;
@@ -446,10 +451,10 @@
   .highlight {
       background: #ffb460;
   }
-  .user {
+  :global(.user) {
       color: #2979fb;
   }
-  .error {
+  :global(.error) {
       color: #ff5050;
   }
   .dialog {
