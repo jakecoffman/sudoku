@@ -2,5 +2,5 @@
 
 npm run build
 git add docs
-git commit -m deplpoy
+git commit -m deploy
 git push
