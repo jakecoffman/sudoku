@@ -318,7 +318,7 @@
         {/each}
       </fieldset>
       <label>
-        <button on:click={() => confirm('Start a new game?') && newGame()}>
+        <button on:click={() => newGame()}>
           New Game
         </button>
       </label>
