@@ -302,6 +302,7 @@
     <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;"
            in:scale
            on:click={e => e.stopPropagation()}
+           class:dark-mode={darkMode}
     >
       <div class="row">
         {#each digits as digit, i}
@@ -328,7 +329,7 @@
 
 {#if end}
   <div class="dialog flex center justify-center" transition:fade>
-    <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()}>
+    <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()} class:dark-mode={darkMode}>
       <h1>YOU WIN!</h1>
       <p>Time spent:</p>
       <Time bind:seconds={seconds}/>
