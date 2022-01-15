@@ -5,13 +5,14 @@
   import Gear from "$lib/icons/Gear.svelte";
   import Pause from "$lib/icons/Pause.svelte";
   import Close from "$lib/icons/Close.svelte";
+  import Undo from "$lib/icons/Undo.svelte";
 
   import {scale, fade} from 'svelte/transition'
   import {digits, stringToGrid, displayToGrid, setErrors,
     getRandomInt, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
   import {easyGames, mediumGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
-  import Undo from "$lib/icons/Undo.svelte";
+  import {Sudoku} from '@brunoccc/sudokujs'
 
   const DIFFICULTY = ['easy', 'medium', 'hard']
   let difficulty
@@ -33,6 +34,14 @@
   let end = false
   let history = []
   let showSettings = false
+  let showErrors
+  let solution = null
+
+  $:{
+    if (typeof window !== 'undefined' && showErrors !== undefined) {
+      localStorage.setItem("showErrors", showErrors.toString())
+    }
+  }
 
   onMount(() => {
     difficulty = localStorage.getItem('difficulty')
@@ -40,6 +49,7 @@
       difficulty = 'hard'
     }
     autoPencil = localStorage.getItem('autoPencil') === 'true'
+    showErrors = localStorage.getItem('showErrors') === 'true'
 
     let str = localStorage.getItem('history')
     if (str) {
@@ -49,6 +59,7 @@
       if (localStorage.getItem('seconds')) {
         seconds = Number(localStorage.getItem('seconds'))
       }
+      generateSolution()
     } else {
       newGame()
     }
@@ -93,6 +104,8 @@
     history = [JSON.parse(JSON.stringify(displayGrid))]
     localStorage.setItem('history', JSON.stringify(history))
     localStorage.setItem('difficulty', difficulty)
+
+    generateSolution()
   }
 
   // select called when a user clicks a cell
@@ -184,6 +197,20 @@
     displayGrid = JSON.parse(JSON.stringify(history[history.length-1]))
     gridGrid = displayToGrid(displayGrid)
   }
+
+  function generateSolution() {
+    const input = []
+    for (let row of gridGrid) {
+      input.push(row.map(i => i.user ? 0 : Number(i.digit)))
+    }
+    const s = new Sudoku(input)
+    if (!s.solve()) {
+      // this should never happen
+      console.error('not solvable')
+    }
+    const c = s.grid.map(row => row.map(cell => cell.toString())).flat().join('')
+    solution = stringToGrid(c)
+  }
 </script>
 
 <section>
@@ -196,7 +223,7 @@
           <span></span>
         {:else if cell.digit !== '0'}
           <span class:user={cell.user}
-                class:error={cell.error}
+                class:error={cell.error || (showErrors && solution[groupIndex][cellIndex].digit !== cell.digit)}
                 class:highlight={selected !== cell && selected?.digit === cell.digit}
                 out:fade={{delay: 100}}
           >
@@ -226,7 +253,7 @@
       <Undo/>
     </button>
   </div>
-  <button class="flex gap-25" on:click={() => paused = !paused}>
+  <button class="flex gap-25" on:click={() => paused = !paused} title="Pause">
     {#if paused}
       <Pause/>
     {:else}
@@ -234,7 +261,7 @@
     {/if}
     <Time bind:seconds={seconds}/>
   </button>
-  <button on:click={() => showSettings = !showSettings}>
+  <button on:click={() => showSettings = !showSettings} title="Settings">
     <Gear/>
   </button>
 </section>
@@ -307,6 +334,10 @@
       <label>
         <input bind:checked={autoPencil} on:click={updateAutoPencil} type="checkbox">
         <span>Auto pencil</span>
+      </label>
+      <label>
+        <input bind:checked={showErrors} type="checkbox">
+        <span>Show errors</span>
       </label>
       <fieldset style="border: 1px solid black">
         <legend>Difficulty</legend>
