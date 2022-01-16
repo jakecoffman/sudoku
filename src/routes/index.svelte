@@ -422,6 +422,9 @@
     body.dark-mode .user {
         color: #938231;
     }
+    body.dark-mode .error {
+        color: #ff0000;
+    }
   </style>
 </svelte:head>
 
