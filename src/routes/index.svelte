@@ -13,9 +13,9 @@
   import {easyGames, mediumGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
   import {Sudoku} from '@brunoccc/sudokujs'
+  import {autoPencil, darkMode, difficulty, loadFromLocalStorage, showErrors} from "../store.js";
 
   const DIFFICULTY = ['easy', 'medium', 'hard']
-  let difficulty
 
   let displayGrid = stringToGrid('000000000000000000000000000000000000000000000000000000000000000000000000000000000')
   let gridGrid = displayToGrid(displayGrid)
@@ -28,40 +28,25 @@
   }, 1000)
   let seconds = 0
   let usingPencil = false
-  let autoPencil = false
   let selected = null
   let target = null
   let end = false
   let history = []
   let showSettings = false
-  let showErrors
-  let darkMode
   let solution = null
 
   $:{
-    if (typeof window !== 'undefined' && showErrors !== undefined) {
-      localStorage.setItem("showErrors", showErrors.toString())
-    }
-  }
-  $:{
-    if (typeof window !== 'undefined' && darkMode !== undefined) {
-      if (darkMode) {
-        window.document.body.classList.add('dark-mode')
-      } else {
-        window.document.body.classList.remove('dark-mode')
-      }
-      localStorage.setItem("dark-mode", darkMode.toString())
+    if (typeof window === 'undefined') {
+      // wait for onMount
+    } else if ($darkMode) {
+      window.document.body.classList.add('dark-mode')
+    } else {
+      window.document.body.classList.remove('dark-mode')
     }
   }
 
   onMount(() => {
-    darkMode = localStorage.getItem('dark-mode') === 'true'
-    difficulty = localStorage.getItem('difficulty')
-    if (!difficulty) {
-      difficulty = 'hard'
-    }
-    autoPencil = localStorage.getItem('autoPencil') === 'true'
-    showErrors = localStorage.getItem('showErrors') === 'true'
+    loadFromLocalStorage()
 
     let str = localStorage.getItem('history')
     if (str) {
@@ -95,7 +80,7 @@
     paused = false
     showSettings = false
     let games
-    switch (difficulty) {
+    switch ($difficulty) {
       case 'easy':
         games = easyGames
         break
@@ -110,12 +95,11 @@
     }
     displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
     gridGrid = displayToGrid(displayGrid)
-    if (autoPencil) {
+    if ($autoPencil) {
       doAutoPencil(displayGrid, gridGrid)
     }
     history = [JSON.parse(JSON.stringify(displayGrid))]
     localStorage.setItem('history', JSON.stringify(history))
-    localStorage.setItem('difficulty', difficulty)
 
     generateSolution()
   }
@@ -137,7 +121,7 @@
     }
     selected.digit = '0'
     setErrors(displayGrid, gridGrid)
-    if (autoPencil) {
+    if ($autoPencil) {
       doAutoPencil(displayGrid, gridGrid)
     }
     displayGrid = displayGrid
@@ -182,8 +166,7 @@
 
   function updateAutoPencil() {
     // this looks backwards, but the svelte click hasn't fired yet
-    localStorage.setItem('autoPencil', (!autoPencil).toString())
-    if (autoPencil) {
+    if ($autoPencil) {
       for (let row of displayGrid) {
         for (let cell of row) {
           cell.pencil = []
@@ -230,12 +213,12 @@
   {#each displayGrid as group, groupIndex}
     <div class="row">
     {#each group as cell, cellIndex}
-      <div class="cell" class:dark-mode={darkMode} class:selected={selected === cell} on:click={(e) => select(e, cell)}>
+      <div class="cell" class:dark-mode={$darkMode} class:selected={selected === cell} on:click={(e) => select(e, cell)}>
         {#if paused && !end}
           <span></span>
         {:else if cell.digit !== '0'}
           <span class:user={cell.user}
-                class:error={cell.error || (showErrors && solution[groupIndex][cellIndex].digit !== cell.digit)}
+                class:error={cell.error || ($showErrors && solution[groupIndex][cellIndex].digit !== cell.digit)}
                 class:highlight={selected !== cell && selected?.digit === cell.digit}
                 out:fade={{delay: 100}}
           >
@@ -278,7 +261,7 @@
   </button>
 </section>
 
-<div class="mobile" class:dark-mode={darkMode}>
+<div class="mobile" class:dark-mode={$darkMode}>
   {#each digits as digit, i}
     <span class="flex center justify-center"
           on:click={() => pick(digit)}
@@ -302,7 +285,7 @@
     <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;"
            in:scale
            on:click={e => e.stopPropagation()}
-           class:dark-mode={darkMode}
+           class:dark-mode={$darkMode}
     >
       <div class="row">
         {#each digits as digit, i}
@@ -329,7 +312,7 @@
 
 {#if end}
   <div class="dialog flex center justify-center" transition:fade>
-    <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()} class:dark-mode={darkMode}>
+    <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()} class:dark-mode={$darkMode}>
       <h1>YOU WIN!</h1>
       <p>Time spent:</p>
       <Time bind:seconds={seconds}/>
@@ -342,25 +325,25 @@
 
 {#if showSettings}
   <div class="dialog flex center justify-center" on:click={() => showSettings = !showSettings} transition:fade>
-    <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()} class:dark-mode={darkMode}>
+    <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()} class:dark-mode={$darkMode}>
       <h2>Settings</h2>
       <label>
-        <input bind:checked={autoPencil} on:click={updateAutoPencil} type="checkbox">
+        <input bind:checked={$autoPencil} on:click={updateAutoPencil} type="checkbox">
         <span>Auto pencil</span>
       </label>
       <label>
-        <input bind:checked={showErrors} type="checkbox">
+        <input bind:checked={$showErrors} type="checkbox">
         <span>Show errors</span>
       </label>
       <label>
-        <input bind:checked={darkMode} type="checkbox">
+        <input bind:checked={$darkMode} type="checkbox">
         <span>Dark mode</span>
       </label>
       <fieldset style="border: 1px solid black">
         <legend>Difficulty</legend>
         {#each DIFFICULTY as diff}
         <label>
-          <input type=radio bind:group={difficulty} name="difficulty" value={diff}>
+          <input type=radio bind:group={$difficulty} name="difficulty" value={diff}>
           {diff}
         </label>
         {/each}
