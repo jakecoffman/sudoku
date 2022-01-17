@@ -13,7 +13,7 @@
   import {easyGames, mediumGames, hardGames} from "$lib/games.js";
   import {onMount} from "svelte";
   import {Sudoku} from '@brunoccc/sudokujs'
-  import {autoPencil, darkMode, difficulty, loadFromLocalStorage, showErrors} from "../store.js";
+  import {autoPencil, darkMode, difficulty, loadFromLocalStorage, showErrors, history} from "../store.js";
 
   const DIFFICULTY = ['easy', 'medium', 'hard']
 
@@ -31,7 +31,6 @@
   let selected = null
   let target = null
   let end = false
-  let history = []
   let showSettings = false
   let solution = null
 
@@ -48,10 +47,8 @@
   onMount(() => {
     loadFromLocalStorage()
 
-    let str = localStorage.getItem('history')
-    if (str) {
-      history = JSON.parse(str)
-      displayGrid = JSON.parse(JSON.stringify(history[history.length-1]))
+    if ($history.length > 0) {
+      displayGrid = history.latest()
       gridGrid = displayToGrid(displayGrid)
       if (localStorage.getItem('seconds')) {
         seconds = Number(localStorage.getItem('seconds'))
@@ -91,15 +88,15 @@
         games = hardGames
         break
       default:
-        return
+        $difficulty = 'hard'
+        games = hardGames
     }
     displayGrid = stringToGrid(games[getRandomInt(0, games.length)])
     gridGrid = displayToGrid(displayGrid)
     if ($autoPencil) {
       doAutoPencil(displayGrid, gridGrid)
     }
-    history = [JSON.parse(JSON.stringify(displayGrid))]
-    localStorage.setItem('history', JSON.stringify(history))
+    $history = [JSON.parse(JSON.stringify(displayGrid))]
 
     generateSolution()
   }
@@ -126,8 +123,7 @@
     }
     displayGrid = displayGrid
     gridGrid = gridGrid
-    history.push(JSON.parse(JSON.stringify(displayGrid)))
-    localStorage.setItem('history', JSON.stringify(history))
+    history.push(displayGrid)
     selected = null
   }
 
@@ -151,8 +147,7 @@
     }
     displayGrid = displayGrid
     gridGrid = gridGrid
-    history.push(JSON.parse(JSON.stringify(displayGrid)))
-    localStorage.setItem('history', JSON.stringify(history))
+    history.push(displayGrid)
 
     // check for win condition
     for (let row of displayGrid) {
@@ -173,23 +168,21 @@
         }
       }
       displayGrid = displayGrid
-      history.push(JSON.parse(JSON.stringify(displayGrid)))
-      localStorage.setItem('history', JSON.stringify(history))
+      history.push(displayGrid)
       return
     }
     doAutoPencil(displayGrid, gridGrid)
-    history.push(JSON.parse(JSON.stringify(displayGrid)))
-    localStorage.setItem('history', JSON.stringify(history))
+    history.push(displayGrid)
     displayGrid = displayGrid
     gridGrid = gridGrid
   }
 
   function undo() {
-    if (history.length < 2) {
+    if ($history.length < 2) {
       return
     }
     history.pop()
-    displayGrid = JSON.parse(JSON.stringify(history[history.length-1]))
+    displayGrid = history.latest()
     gridGrid = displayToGrid(displayGrid)
   }
 
