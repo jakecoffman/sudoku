@@ -30,6 +30,10 @@ export const darkMode = writable(false);
 export const showErrors = writable(false);
 export const difficulty = writable('hard');
 
+function copy(v) {
+  return JSON.parse(JSON.stringify(v))
+}
+
 function createHistory() {
   const {update, set, subscribe} = writable([])
 
@@ -39,10 +43,10 @@ function createHistory() {
     // returns a copy of the last move
     latest: () => {
       const v = get(history)
-      return JSON.parse(JSON.stringify(v[v.length-1]))
+      return copy(v[v.length-1])
     },
     push: (newValue) => {
-      return update(history => [...history, JSON.parse(JSON.stringify(newValue))])
+      return update(history => [...history, copy(newValue)])
     },
     pop: () => update(v => v.pop() && v)
   }
