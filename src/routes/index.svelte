@@ -1,6 +1,5 @@
 <script>
   import '../global.css'
-  import Pencil from "$lib/icons/Pencil.svelte";
 
   import {scale, fade} from 'svelte/transition'
   import {digits, displayToGrid} from "$lib/jake.js";
@@ -9,7 +8,6 @@
     displayGrid,
     gridGrid,
     selected,
-    usingPencil,
     showSettings,
     darkMode,
     loadFromLocalStorage,
@@ -26,7 +24,8 @@
   import MobileInput from "$lib/MobileInput.svelte";
   import ControlBar from "$lib/ControlBar.svelte";
   import Board from "$lib/Board.svelte";
-  import Clear from "$lib/Clear.svelte";
+  import ButtonPencil from "$lib/icons/ButtonPencil.svelte";
+  import ButtonClear from "$lib/ButtonClear.svelte";
 
   let target = null
 
@@ -107,16 +106,13 @@
             <span>{digit}</span>
           </span>
         {/each}
-        <span class="cell" title="toggle pencil"
-              class:selected={$usingPencil}
-              on:click={() => $usingPencil = !$usingPencil}
-        >
-          <span>
-            <Pencil/>
-          </span>
+        <span class="cell">
+          <ButtonPencil/>
         </span>
         <span class="cell"><span>&nbsp;</span></span>
-        <span class="cell"><Clear/></span>
+        <span class="cell">
+          <ButtonClear/>
+        </span>
       </div>
     </aside>
   </div>

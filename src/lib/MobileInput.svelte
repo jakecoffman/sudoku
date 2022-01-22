@@ -1,8 +1,8 @@
 <script>
   import '../global.css'
-  import {selected, usingPencil, darkMode, pick} from "../store.js";
-  import Pencil from "$lib/icons/Pencil.svelte";
-  import Clear from "$lib/Clear.svelte";
+  import {selected, darkMode, pick} from "../store.js";
+  import ButtonPencil from "$lib/icons/ButtonPencil.svelte";
+  import ButtonClear from "$lib/ButtonClear.svelte";
 
   const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 </script>
@@ -16,14 +16,9 @@
       <span>{digit}</span>
     </span>
   {/each}
-  <span class:selected={$usingPencil}
-        on:click={() => $usingPencil = !$usingPencil}>
-    <Pencil/>
-  </span>
+  <ButtonPencil/>
   <span></span>
-  <span>
-    <Clear/>
-  </span>
+  <ButtonClear/>
 </div>
 
 <style>
