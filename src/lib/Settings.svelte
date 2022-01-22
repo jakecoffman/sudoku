@@ -1,16 +1,14 @@
 <script>
   import {fade, scale} from "svelte/transition";
   import { createEventDispatcher } from 'svelte';
-  import {autoPencil, showErrors, darkMode, difficulty} from "../store.js";
+  import {showSettings, autoPencil, showErrors, darkMode, difficulty} from "../store.js";
 
   const dispatch = createEventDispatcher();
 
   const DIFFICULTY = ['easy', 'medium', 'hard']
-
-  export let showSettings
 </script>
 
-<div class="dialog flex center justify-center" on:click={() => showSettings = false} transition:fade>
+<div class="dialog flex center justify-center" on:click={() => $showSettings = false} transition:fade>
   <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()} class:dark-mode={$darkMode}>
     <h2>Settings</h2>
     <label>

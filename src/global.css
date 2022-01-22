@@ -169,3 +169,27 @@ aside.dark-mode {
 aside .cell {
     font-size: 20pt;
 }
+
+.selected, .mobile>.selected {
+    background: var(--blue);
+}
+
+@media (min-width: 650px) {
+    .board {
+        width: 35rem !important;
+    }
+}
+@media (max-width: 650px) {
+    .candidates {
+        font-size: .7rem;
+    }
+    aside {
+        display: none;
+    }
+    .board {
+        margin-top: 0;
+    }
+    .desktop {
+        display: none;
+    }
+}

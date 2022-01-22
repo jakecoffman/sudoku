@@ -1,10 +1,10 @@
 <script>
-  export let seconds = 0
-  $: minutes = Math.floor(seconds/60)
+  import {seconds} from "../store.js";
+  $: minutes = Math.floor($seconds/60)
 </script>
 
 <code>
-  {minutes.toLocaleString('en-US', {minimumIntegerDigits: 2})}:{(seconds - minutes*60).toLocaleString('en-US', {minimumIntegerDigits: 2})}
+  {minutes.toLocaleString('en-US', {minimumIntegerDigits: 2})}:{($seconds - minutes*60).toLocaleString('en-US', {minimumIntegerDigits: 2})}
 </code>
 
 <style>
