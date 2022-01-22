@@ -1,10 +1,9 @@
 <script>
   import '../global.css'
   import Pencil from "$lib/icons/Pencil.svelte";
-  import Close from "$lib/icons/Close.svelte";
 
   import {scale, fade} from 'svelte/transition'
-  import {digits, displayToGrid, setErrors, clearSuperfluousPencilMarks, doAutoPencil} from "$lib/jake.js";
+  import {digits, displayToGrid} from "$lib/jake.js";
   import {onMount} from "svelte";
   import {
     displayGrid,
@@ -12,7 +11,6 @@
     selected,
     usingPencil,
     showSettings,
-    autoPencil,
     darkMode,
     loadFromLocalStorage,
     newGame,
@@ -79,24 +77,6 @@
     target = event.target.getBoundingClientRect()
   }
 
-  function updateAutoPencil() {
-    // this looks backwards, but the svelte click hasn't fired yet
-    if ($autoPencil) {
-      for (let row of $displayGrid) {
-        for (let cell of row) {
-          cell.pencil = []
-        }
-      }
-      $displayGrid = $displayGrid
-      history.push($displayGrid)
-      return
-    }
-    doAutoPencil($displayGrid, $gridGrid)
-    history.push($displayGrid)
-    $displayGrid = $displayGrid
-    $gridGrid = $gridGrid
-  }
-
   let inputStyle
   $: if (target) {
     inputStyle = `position: absolute; top: ${target.top-target.height/3}px; left: ${target.left-target.width/3}px; width: 6rem;`
@@ -147,5 +127,5 @@
 {/if}
 
 {#if $showSettings}
-  <Settings on:updateAutoPencil={updateAutoPencil} on:newGame={newGame}/>
+  <Settings/>
 {/if}
