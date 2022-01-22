@@ -6,7 +6,7 @@
   import Gear from "$lib/icons/Gear.svelte";
 
   import {showSettings, paused, history, displayGrid, gridGrid} from "../store.js";
-  import {displayToGrid} from "$lib/jake.js";
+  import {displayToGrid} from "$lib/sudoku.js";
 
   function undo() {
     if ($history.length < 2) {

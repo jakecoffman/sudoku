@@ -1,7 +1,7 @@
 <script>
   import Close from "$lib/icons/Close.svelte";
   import {autoPencil, displayGrid, gridGrid, history, selected} from "../store.js";
-  import {doAutoPencil, setErrors} from "$lib/jake.js";
+  import {doAutoPencil, setErrors} from "$lib/sudoku.js";
 
   // user clicked X on the numpad
   function clear() {

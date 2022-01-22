@@ -6,7 +6,7 @@ import {
   getRandomInt,
   setErrors,
   stringToGrid
-} from "$lib/jake.js";
+} from "$lib/sudoku.js";
 import {easyGames, hardGames, mediumGames} from "$lib/games.js";
 import {Sudoku} from '@brunoccc/sudokujs'
 
@@ -33,6 +33,17 @@ export function loadFromLocalStorage() {
     console.log("failed to load history:", e)
   }
   history.subscribe(v => localStorage.setItem('history', JSON.stringify(v)))
+
+  if (get(history).length > 0) {
+    displayGrid.set(history.latest())
+    gridGrid.set(displayToGrid(get(displayGrid)))
+    if (localStorage.getItem('seconds')) {
+      seconds.set(Number(localStorage.getItem('seconds')))
+    }
+    generateSolution()
+  } else {
+    newGame()
+  }
 }
 
 export const selected = writable(null);

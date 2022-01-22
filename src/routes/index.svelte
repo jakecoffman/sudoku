@@ -2,19 +2,14 @@
   import '../global.css'
 
   import {scale, fade} from 'svelte/transition'
-  import {digits, displayToGrid} from "$lib/jake.js";
+  import {digits} from "$lib/sudoku.js";
   import {onMount} from "svelte";
   import {
-    displayGrid,
-    gridGrid,
     selected,
     showSettings,
     darkMode,
     loadFromLocalStorage,
-    newGame,
-    generateSolution,
     pick,
-    history,
     end,
     seconds,
     paused
@@ -41,17 +36,6 @@
 
   onMount(() => {
     loadFromLocalStorage()
-
-    if ($history.length > 0) {
-      $displayGrid = history.latest()
-      $gridGrid = displayToGrid($displayGrid)
-      if (localStorage.getItem('seconds')) {
-        $seconds = Number(localStorage.getItem('seconds'))
-      }
-      generateSolution()
-    } else {
-      newGame()
-    }
 
     window.onblur = () => {
       $paused = true

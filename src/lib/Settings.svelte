@@ -10,7 +10,7 @@
     history,
     gridGrid, newGame
   } from "../store.js";
-  import {doAutoPencil} from "$lib/jake.js";
+  import {doAutoPencil} from "$lib/sudoku.js";
 
   const DIFFICULTY = ['easy', 'medium', 'hard']
 
