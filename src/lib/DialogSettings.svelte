@@ -33,6 +33,7 @@
   }
 </script>
 
+{#if $showSettings}
 <div class="dialog flex center justify-center" on:click={() => $showSettings = false} transition:fade>
   <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()} class:dark-mode={$darkMode}>
     <h2>Settings</h2>
@@ -64,6 +65,7 @@
     </label>
   </aside>
 </div>
+{/if}
 
 <style>
     .settings {

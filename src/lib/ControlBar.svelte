@@ -18,34 +18,19 @@
   }
 </script>
 
-<section class="timebar">
-  <div>
-    <button on:click={undo}>
-      <Undo/>
-    </button>
-  </div>
-  <button class="flex gap-25" on:click={() => $paused = !$paused} title="Pause">
-    {#if $paused}
-      <Pause/>
-    {:else}
-      <Stopwatch/>
-    {/if}
-    <Time/>
+<div>
+  <button on:click={undo}>
+    <Undo/>
   </button>
-  <button on:click={() => $showSettings = !$showSettings} title="Settings">
-    <Gear/>
-  </button>
-</section>
-
-<style>
-    .timebar {
-        gap: 1rem;
-        flex-direction: row;
-        align-items: center;
-    }
-    @media (max-width: 650px) {
-        .timebar {
-            flex-direction: row;
-        }
-    }
-</style>
+</div>
+<button class="flex gap-25" on:click={() => $paused = !$paused} title="Pause">
+  {#if $paused}
+    <Pause/>
+  {:else}
+    <Stopwatch/>
+  {/if}
+  <Time/>
+</button>
+<button on:click={() => $showSettings = !$showSettings} title="Settings">
+  <Gear/>
+</button>

@@ -79,18 +79,26 @@ function createHistory() {
 }
 export const history = createHistory()
 
-export const paused = writable(false);
+// timer logic
+export const paused = writable(true);
 export const seconds = writable(0);
-setInterval(() => {
-  if (!get(paused)) {
-    seconds.update(v => v + 1)
+let tick = null
+paused.subscribe(v => {
+  if (!v) {
+    tick = setInterval(() => {
+      seconds.update(v => v + 1)
+    }, 1000)
+  } else {
+    clearInterval(tick)
   }
-}, 1000)
+})
+paused.set(false);
 
 export const displayGrid = writable(stringToGrid('000000000000000000000000000000000000000000000000000000000000000000000000000000000'))
 export const gridGrid = writable(displayToGrid(get(displayGrid)))
 export const solution = writable(undefined)
 
+// starts a new game
 export function newGame() {
   seconds.set(0)
   end.set(false)
@@ -121,7 +129,8 @@ export function newGame() {
   generateSolution()
 }
 
-export function generateSolution() {
+// sets $solution so that showErrors works
+function generateSolution() {
   const input = []
   for (let row of get(gridGrid)) {
     input.push(row.map(i => i.user ? 0 : Number(i.digit)))
@@ -140,22 +149,26 @@ export function pick(digit) {
   if (get(paused)) {
     return
   }
+  const sel = get(selected)
+  if (!sel) {
+    return
+  }
 
   if (get(usingPencil)) {
-    if (get(selected).pencil.includes(digit)) {
+    if (sel.pencil.includes(digit)) {
       // remove the digit from pencil
-      selected.update(v => ({...v, pencil: v.pencil.filter(v => v !== digit)}))
+      sel.pencil = sel.pencil.filter(v => v !== digit)
+      selected.set(sel)
     } else {
       // add the digit to pencil
-      selected.update(v => ({...v, pencil: [...v.pencil, digit]}))
+      sel.pencil.push(digit)
+      selected.set(sel)
     }
   } else {
-    const v = get(selected)
-    v.digit = digit
-    selected.set(v)
-    // not sure why I can't do this above: selected.update(v => ({...v, digit}))
+    sel.digit = digit
+    selected.set(sel)
     setErrors(get(displayGrid), get(gridGrid))
-    clearSuperfluousPencilMarks(get(selected), get(displayGrid), get(gridGrid))
+    clearSuperfluousPencilMarks(sel, get(displayGrid), get(gridGrid))
     selected.set(null)
   }
   // detect the mutations above

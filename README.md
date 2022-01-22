@@ -2,10 +2,17 @@
 
 An accessible sudoku puzzle game.
 
-## User requirements
+## Features
 
-In addition to usual Sudoku features:
+- Timer
+- Undo
+- Auto pencil
+- Show errors (input that is not part of the solution)
+- Dark mode
+- 3 difficulty levels
+- Stores game in localStorage
 
-- Responsive, so it can be easily read
-- When clicking a cell, popup a keypad to minimize mouse movements
-- Stretch goal: web speech api
+Accessibility:
+
+- Mobile input
+- Desktop input designed to minimize mouse movement

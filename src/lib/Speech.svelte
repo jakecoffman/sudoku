@@ -11,7 +11,7 @@
     let cells = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
     let commands = ['play', 'clear', 'pencil']
 
-    // after reading this I found it is not being used...
+    // after writing this I found it is not being used...
     let grammar = `#JSGF V1.0;
 grammar sudoku;
 <action> = ${commands.join(' | ')};

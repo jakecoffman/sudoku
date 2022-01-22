@@ -51,6 +51,41 @@
 </div>
 
 <style>
+    .board {
+        padding: 5px;
+        margin-top: 2rem;
+        width: 100%;
+        border-radius: 10px;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 4px;
+        background: var(--lg);
+
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+    }
+    @media (min-width: 650px) {
+        .board {
+            width: 35rem !important;
+        }
+    }
+    .candidates {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        font-size: .9rem;
+        pointer-events: none;
+    }
+    .candidates * {
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    @media (max-width: 650px) {
+        .candidates {
+            font-size: .7rem;
+        }
+    }
     .highlight {
         background: #ffb460;
     }

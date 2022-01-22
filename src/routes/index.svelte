@@ -3,15 +3,14 @@
 
   import {onMount} from "svelte";
   import {
-    showSettings,
     darkMode,
     loadFromLocalStorage,
     end,
     seconds,
     paused
   } from "../store.js";
-  import Settings from "$lib/Settings.svelte";
-  import GameOver from "$lib/GameOver.svelte";
+  import DialogSettings from "$lib/DialogSettings.svelte";
+  import DialogGameOver from "$lib/DialogGameOver.svelte";
   import ControlBar from "$lib/ControlBar.svelte";
   import Board from "$lib/Board.svelte";
   import InputMobile from "$lib/InputMobile.svelte";
@@ -48,16 +47,28 @@
   <Board/>
 </section>
 
-<ControlBar/>
+<section class="bar">
+  <ControlBar/>
+</section>
 
 <InputMobile/>
 
 <InputDesktop/>
 
-{#if $end}
-  <GameOver/>
-{/if}
+<DialogGameOver/>
 
-{#if $showSettings}
-  <Settings/>
-{/if}
+<DialogSettings/>
+
+<style>
+    .bar {
+        gap: 1rem;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    @media (max-width: 650px) {
+        .bar {
+            flex-direction: row;
+        }
+    }
+</style>

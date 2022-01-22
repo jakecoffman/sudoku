@@ -1,9 +1,10 @@
 <script>
   import {fade, scale} from "svelte/transition";
   import Time from "$lib/Time.svelte";
-  import {darkMode, newGame} from '../store.js'
+  import {end, darkMode, newGame} from '../store.js'
 </script>
 
+{#if $end}
 <div class="dialog flex center justify-center" transition:fade>
   <aside class="flex column center justify-center settings" transition:scale on:click={e => e.stopPropagation()} class:dark-mode={$darkMode}>
     <h1>YOU WIN!</h1>
@@ -14,3 +15,4 @@
     </button>
   </aside>
 </div>
+{/if}
