@@ -1,5 +1,12 @@
 import {writable, get} from "svelte/store";
-import {displayToGrid, doAutoPencil, getRandomInt, stringToGrid} from "$lib/jake.js";
+import {
+  clearSuperfluousPencilMarks,
+  displayToGrid,
+  doAutoPencil,
+  getRandomInt,
+  setErrors,
+  stringToGrid
+} from "$lib/jake.js";
 import {easyGames, hardGames, mediumGames} from "$lib/games.js";
 import {Sudoku} from '@brunoccc/sudokujs'
 
@@ -114,4 +121,42 @@ export function generateSolution() {
   }
   const c = s.grid.map(row => row.map(cell => cell.toString())).flat().join('')
   solution.set(stringToGrid(c))
+}
+
+// pick called when a user clicks a digit on the popup dialog picker
+export function pick(digit) {
+  if (get(paused)) {
+    return
+  }
+
+  if (get(usingPencil)) {
+    if (get(selected).pencil.includes(digit)) {
+      // remove the digit from pencil
+      selected.update(v => ({...v, pencil: v.pencil.filter(v => v !== digit)}))
+    } else {
+      // add the digit to pencil
+      selected.update(v => ({...v, pencil: [...v.pencil, digit]}))
+    }
+  } else {
+    const v = get(selected)
+    v.digit = digit
+    selected.set(v)
+    // not sure why I can't do this above: selected.update(v => ({...v, digit}))
+    setErrors(get(displayGrid), get(gridGrid))
+    clearSuperfluousPencilMarks(get(selected), get(displayGrid), get(gridGrid))
+    selected.set(null)
+  }
+  // detect the mutations above
+  displayGrid.update(v => v)
+  gridGrid.update(v => v)
+  history.push(get(displayGrid))
+
+  // check for win condition
+  for (let row of get(displayGrid)) {
+    if (row.some(v => v.digit === '0' || v.error)) {
+      return
+    }
+  }
+  end.set(true)
+  paused.set(true)
 }

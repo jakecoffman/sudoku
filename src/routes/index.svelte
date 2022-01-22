@@ -17,6 +17,7 @@
     loadFromLocalStorage,
     newGame,
     generateSolution,
+    pick,
     history,
     end,
     seconds,
@@ -27,6 +28,7 @@
   import MobileInput from "$lib/MobileInput.svelte";
   import ControlBar from "$lib/ControlBar.svelte";
   import Board from "$lib/Board.svelte";
+  import Clear from "$lib/Clear.svelte";
 
   let target = null
 
@@ -77,54 +79,6 @@
     target = event.target.getBoundingClientRect()
   }
 
-  // user clicked X on the numpad
-  function clear() {
-    if (!$selected.user) {
-      return
-    }
-    $selected.digit = '0'
-    setErrors($displayGrid, $gridGrid)
-    if ($autoPencil) {
-      doAutoPencil($displayGrid, $gridGrid)
-    }
-    $displayGrid = $displayGrid
-    $gridGrid = $gridGrid
-    history.push($displayGrid)
-    $selected = null
-  }
-
-  // pick called when a user clicks a digit on the popup dialog picker
-  function pick(digit) {
-    if ($paused) {
-      return
-    }
-
-    if ($usingPencil) {
-      if ($selected.pencil.includes(digit)) {
-        $selected.pencil = $selected.pencil.filter(v => v !== digit)
-      } else {
-        $selected.pencil = [...$selected.pencil, digit]
-      }
-    } else {
-      $selected.digit = digit
-      setErrors($displayGrid, $gridGrid)
-      clearSuperfluousPencilMarks($selected, $displayGrid, $gridGrid)
-      $selected = null
-    }
-    $displayGrid = $displayGrid
-    $gridGrid = $gridGrid
-    history.push($displayGrid)
-
-    // check for win condition
-    for (let row of $displayGrid) {
-      if (row.some(v => v.digit === '0' || v.error)) {
-        return
-      }
-    }
-    $end = true
-    $paused = true
-  }
-
   function updateAutoPencil() {
     // this looks backwards, but the svelte click hasn't fired yet
     if ($autoPencil) {
@@ -142,6 +96,13 @@
     $displayGrid = $displayGrid
     $gridGrid = $gridGrid
   }
+
+  let inputStyle
+  $: if (target) {
+    inputStyle = `position: absolute; top: ${target.top-target.height/3}px; left: ${target.left-target.width/3}px; width: 6rem;`
+  } else {
+    inputStyle = ``
+  }
 </script>
 
 <section>
@@ -150,12 +111,12 @@
 
 <ControlBar/>
 
-<MobileInput on:clear={clear} on:pick={e => pick(e.detail)}/>
+<MobileInput/>
 
 <!-- begin desktop input widget -->
 {#if $selected && ($selected.digit === '0' || $selected.user)}
   <div class="dialog desktop" on:click={() => $selected = null} in:fade>
-    <aside style="position: absolute; top: {target.top-target.height/3}px; left: {target.left-target.width/3}px; width: 6rem;"
+    <aside style={inputStyle}
            in:scale
            on:click={e => e.stopPropagation()}
            class:dark-mode={$darkMode}
@@ -175,9 +136,7 @@
           </span>
         </span>
         <span class="cell"><span>&nbsp;</span></span>
-        <span class="cell" on:click={clear} title="close">
-          <span><Close/></span>
-        </span>
+        <span class="cell"><Clear/></span>
       </div>
     </aside>
   </div>

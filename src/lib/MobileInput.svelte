@@ -1,11 +1,8 @@
 <script>
   import '../global.css'
-  import {selected, usingPencil, darkMode} from "../store.js";
+  import {selected, usingPencil, darkMode, pick} from "../store.js";
   import Pencil from "$lib/icons/Pencil.svelte";
-  import Close from "$lib/icons/Close.svelte";
-  import { createEventDispatcher } from 'svelte';
-
-  const dispatch = createEventDispatcher();
+  import Clear from "$lib/Clear.svelte";
 
   const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 </script>
@@ -13,7 +10,7 @@
 <div class="mobile" class:dark-mode={$darkMode}>
   {#each digits as digit, i}
     <span class="flex center justify-center"
-          on:click={() => dispatch('pick', digit)}
+          on:click={() => pick(digit)}
           class:selected={$selected?.user && $selected?.pencil?.includes(digit)}
     >
       <span>{digit}</span>
@@ -24,8 +21,8 @@
     <Pencil/>
   </span>
   <span></span>
-  <span on:click={() => dispatch('clear')}>
-    <Close/>
+  <span>
+    <Clear/>
   </span>
 </div>
 
