@@ -1,11 +1,17 @@
 <script>
   import '../global.css'
   import {fade} from "svelte/transition";
-  import {displayGrid, darkMode, selected, paused, showErrors, solution, end} from "../store.js";
-  import {createEventDispatcher} from "svelte";
-  const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  import {target, displayGrid, darkMode, selected, paused, showErrors, solution, end} from "../store.js";
+  import {digits} from "$lib/sudoku.js";
 
-  const dispatch = createEventDispatcher();
+  function select(event, cell) {
+    if ($paused) {
+      return
+    }
+
+    $selected = cell
+    $target = event.target.getBoundingClientRect()
+  }
 </script>
 
 <div class="board">
@@ -15,7 +21,7 @@
         <div class="cell"
              class:dark-mode={$darkMode}
              class:selected={$selected === cell}
-             on:click={event => dispatch('select', {event, cell})}
+             on:click={event => select(event, cell)}
         >
           {#if $paused && !$end}
             <span></span>

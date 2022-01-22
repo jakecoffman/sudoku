@@ -47,6 +47,7 @@ export function loadFromLocalStorage() {
 }
 
 export const selected = writable(null);
+export const target = writable(null);
 export const usingPencil = writable(false);
 export const end = writable(false);
 export const showSettings = writable(false);

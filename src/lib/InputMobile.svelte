@@ -3,8 +3,7 @@
   import {selected, darkMode, pick} from "../store.js";
   import ButtonPencil from "$lib/icons/ButtonPencil.svelte";
   import ButtonClear from "$lib/ButtonClear.svelte";
-
-  const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+  import {digits} from "$lib/sudoku.js";
 </script>
 
 <div class="mobile" class:dark-mode={$darkMode}>

@@ -170,8 +170,6 @@ export function clearSuperfluousPencilMarks(selection, displayGrid, gridGrid) {
 }
 
 export function doAutoPencil(displayGrid, gridGrid) {
-  const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-
   for (let group of displayGrid) {
     const takenDigits = group.map(v => v.digit).filter(v => v !== '0')
     const pencil = digits.filter(v => !takenDigits.includes(v))

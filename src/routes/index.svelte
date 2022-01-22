@@ -1,28 +1,21 @@
 <script>
   import '../global.css'
 
-  import {scale, fade} from 'svelte/transition'
-  import {digits} from "$lib/sudoku.js";
   import {onMount} from "svelte";
   import {
-    selected,
     showSettings,
     darkMode,
     loadFromLocalStorage,
-    pick,
     end,
     seconds,
     paused
   } from "../store.js";
   import Settings from "$lib/Settings.svelte";
   import GameOver from "$lib/GameOver.svelte";
-  import MobileInput from "$lib/MobileInput.svelte";
   import ControlBar from "$lib/ControlBar.svelte";
   import Board from "$lib/Board.svelte";
-  import ButtonPencil from "$lib/icons/ButtonPencil.svelte";
-  import ButtonClear from "$lib/ButtonClear.svelte";
-
-  let target = null
+  import InputMobile from "$lib/InputMobile.svelte";
+  import InputDesktop from "$lib/InputDesktop.svelte";
 
   $:{
     if (typeof window === 'undefined') {
@@ -49,58 +42,17 @@
       localStorage.setItem('seconds', $seconds.toString())
     }
   })
-
-  // select called when a user clicks a cell
-  function select(event, cell) {
-    if ($paused) {
-      return
-    }
-
-    $selected = cell
-    target = event.target.getBoundingClientRect()
-  }
-
-  let inputStyle
-  $: if (target) {
-    inputStyle = `position: absolute; top: ${target.top-target.height/3}px; left: ${target.left-target.width/3}px; width: 6rem;`
-  } else {
-    inputStyle = ``
-  }
 </script>
 
 <section>
-  <Board on:select={e => select(e.detail.event, e.detail.cell)}/>
+  <Board/>
 </section>
 
 <ControlBar/>
 
-<MobileInput/>
+<InputMobile/>
 
-<!-- begin desktop input widget -->
-{#if $selected && ($selected.digit === '0' || $selected.user)}
-  <div class="dialog desktop" on:click={() => $selected = null} in:fade>
-    <aside style={inputStyle}
-           in:scale
-           on:click={e => e.stopPropagation()}
-           class:dark-mode={$darkMode}
-    >
-      <div class="row">
-        {#each digits as digit, i}
-          <span class="cell" on:click={() => pick(digit)} class:selected={$selected.pencil.includes(digit)}>
-            <span>{digit}</span>
-          </span>
-        {/each}
-        <span class="cell">
-          <ButtonPencil/>
-        </span>
-        <span class="cell"><span>&nbsp;</span></span>
-        <span class="cell">
-          <ButtonClear/>
-        </span>
-      </div>
-    </aside>
-  </div>
-{/if}
+<InputDesktop/>
 
 {#if $end}
   <GameOver/>
