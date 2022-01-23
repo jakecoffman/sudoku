@@ -6,9 +6,8 @@ const dev = process.env.NODE_ENV === 'development';
 const config = {
 	kit: {
 		adapter: adapter({
-			// default options are shown
-			pages: 'docs',
-			assets: 'docs',
+			pages: 'dist',
+			assets: 'dist',
 			fallback: null,
 			precompress: false
 		}),
