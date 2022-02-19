@@ -23,3 +23,11 @@
 <span on:click={clear} title="close">
   <Close/>
 </span>
+
+<style>
+    @media (max-width: 650px) {
+        span {
+            background: white;
+        }
+    }
+</style>

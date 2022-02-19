@@ -1,7 +1,7 @@
 <script>
   import '../global.css'
   import {selected, darkMode, pick} from "../store.js";
-  import ButtonPencil from "$lib/icons/ButtonPencil.svelte";
+  import ButtonPencil from "$lib/ButtonPencil.svelte";
   import ButtonClear from "$lib/ButtonClear.svelte";
   import {digits} from "$lib/sudoku.js";
 </script>

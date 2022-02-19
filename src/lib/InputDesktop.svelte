@@ -2,7 +2,7 @@
   import {fade, scale} from "svelte/transition";
   import {target, darkMode, pick, selected} from "../store.js";
   import {digits} from "$lib/sudoku.js";
-  import ButtonPencil from "$lib/icons/ButtonPencil.svelte";
+  import ButtonPencil from "$lib/ButtonPencil.svelte";
   import ButtonClear from "$lib/ButtonClear.svelte";
 
   let inputStyle
